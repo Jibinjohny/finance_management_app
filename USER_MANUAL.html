@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>USER_MANUAL</title>
+  <style>
+
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+svg {
+height: auto;
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+border: none;
+border-top: 1px solid #1a1a1a;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+</head>
+<body>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#cashflow-app---user-manual" id="toc-cashflow-app---user-manual">CashFlow App - User Manual</a>
+<ul>
+<li><a href="#table-of-contents" id="toc-table-of-contents">Table of
+Contents</a></li>
+<li><a href="#getting-started" id="toc-getting-started">1. Getting
+Started</a>
+<ul>
+<li><a href="#installation" id="toc-installation">1.1
+Installation</a></li>
+<li><a href="#first-launch" id="toc-first-launch">1.2 First
+Launch</a></li>
+<li><a href="#creating-your-account" id="toc-creating-your-account">1.3
+Creating Your Account</a></li>
+</ul></li>
+<li><a href="#user-account" id="toc-user-account">2. User Account</a>
+<ul>
+<li><a href="#logging-in" id="toc-logging-in">2.1 Logging In</a></li>
+<li><a href="#logging-out" id="toc-logging-out">2.2 Logging Out</a></li>
+</ul></li>
+<li><a href="#managing-accounts" id="toc-managing-accounts">3. Managing
+Accounts</a>
+<ul>
+<li><a href="#viewing-accounts" id="toc-viewing-accounts">3.1 Viewing
+Accounts</a></li>
+<li><a href="#adding-an-account" id="toc-adding-an-account">3.2 Adding
+an Account</a></li>
+<li><a href="#editing-an-account" id="toc-editing-an-account">3.3
+Editing an Account</a></li>
+<li><a href="#deleting-an-account" id="toc-deleting-an-account">3.4
+Deleting an Account</a></li>
+<li><a href="#understanding-loan-accounts" id="toc-understanding-loan-accounts">3.5 Understanding Loan
+Accounts</a></li>
+</ul></li>
+<li><a href="#recording-transactions" id="toc-recording-transactions">4.
+Recording Transactions</a>
+<ul>
+<li><a href="#adding-a-transaction-quick-method" id="toc-adding-a-transaction-quick-method">4.1 Adding a Transaction
+(Quick Method)</a></li>
+<li><a href="#adding-a-transaction-multi-step-method" id="toc-adding-a-transaction-multi-step-method">4.2 Adding a Transaction
+(Multi-Step Method)</a></li>
+<li><a href="#transaction-categories" id="toc-transaction-categories">4.3 Transaction Categories</a></li>
+<li><a href="#using-tags" id="toc-using-tags">4.4 Using Tags</a></li>
+<li><a href="#viewing-transactions" id="toc-viewing-transactions">4.5
+Viewing Transactions</a></li>
+<li><a href="#editing-a-transaction" id="toc-editing-a-transaction">4.6
+Editing a Transaction</a></li>
+<li><a href="#deleting-a-transaction" id="toc-deleting-a-transaction">4.7 Deleting a Transaction</a></li>
+</ul></li>
+<li><a href="#budgets" id="toc-budgets">5. Budgets</a>
+<ul>
+<li><a href="#creating-a-budget" id="toc-creating-a-budget">5.1 Creating
+a Budget</a></li>
+<li><a href="#tracking-budget-progress" id="toc-tracking-budget-progress">5.2 Tracking Budget Progress</a></li>
+<li><a href="#editing-a-budget" id="toc-editing-a-budget">5.3 Editing a
+Budget</a></li>
+<li><a href="#deleting-a-budget" id="toc-deleting-a-budget">5.4 Deleting
+a Budget</a></li>
+</ul></li>
+<li><a href="#financial-goals" id="toc-financial-goals">6. Financial
+Goals</a>
+<ul>
+<li><a href="#creating-a-goal" id="toc-creating-a-goal">6.1 Creating a
+Goal</a></li>
+<li><a href="#updating-goal-progress" id="toc-updating-goal-progress">6.2 Updating Goal Progress</a></li>
+<li><a href="#viewing-goal-progress" id="toc-viewing-goal-progress">6.3
+Viewing Goal Progress</a></li>
+<li><a href="#editing-a-goal" id="toc-editing-a-goal">6.4 Editing a
+Goal</a></li>
+<li><a href="#deleting-a-goal" id="toc-deleting-a-goal">6.5 Deleting a
+Goal</a></li>
+</ul></li>
+<li><a href="#recurring-transactions" id="toc-recurring-transactions">7.
+Recurring Transactions</a>
+<ul>
+<li><a href="#creating-a-recurring-transaction" id="toc-creating-a-recurring-transaction">7.1 Creating a Recurring
+Transaction</a></li>
+<li><a href="#frequency-options" id="toc-frequency-options">7.2
+Frequency Options</a></li>
+<li><a href="#auto-add-feature" id="toc-auto-add-feature">7.3 Auto-Add
+Feature</a></li>
+<li><a href="#editing-a-recurring-transaction" id="toc-editing-a-recurring-transaction">7.4 Editing a Recurring
+Transaction</a></li>
+<li><a href="#deleting-a-recurring-transaction" id="toc-deleting-a-recurring-transaction">7.5 Deleting a Recurring
+Transaction</a></li>
+</ul></li>
+<li><a href="#reports-analytics" id="toc-reports-analytics">8. Reports
+&amp; Analytics</a>
+<ul>
+<li><a href="#dashboard-overview" id="toc-dashboard-overview">8.1
+Dashboard Overview</a></li>
+<li><a href="#statistics-screen" id="toc-statistics-screen">8.2
+Statistics Screen</a></li>
+<li><a href="#monthly-reports" id="toc-monthly-reports">8.3 Monthly
+Reports</a></li>
+<li><a href="#generating-pdf-reports" id="toc-generating-pdf-reports">8.4 Generating PDF Reports</a></li>
+<li><a href="#calendar-view" id="toc-calendar-view">8.5 Calendar
+View</a></li>
+</ul></li>
+<li><a href="#notifications" id="toc-notifications">9. Notifications</a>
+<ul>
+<li><a href="#notification-types" id="toc-notification-types">9.1
+Notification Types</a></li>
+<li><a href="#viewing-notifications" id="toc-viewing-notifications">9.2
+Viewing Notifications</a></li>
+<li><a href="#notification-settings" id="toc-notification-settings">9.3
+Notification Settings</a></li>
+</ul></li>
+<li><a href="#settings-profile" id="toc-settings-profile">10. Settings
+&amp; Profile</a>
+<ul>
+<li><a href="#viewing-profile" id="toc-viewing-profile">10.1 Viewing
+Profile</a></li>
+<li><a href="#editing-profile" id="toc-editing-profile">10.2 Editing
+Profile</a></li>
+<li><a href="#changing-currency" id="toc-changing-currency">10.3
+Changing Currency</a></li>
+<li><a href="#resetting-data" id="toc-resetting-data">10.4 Resetting
+Data</a></li>
+<li><a href="#app-information" id="toc-app-information">10.5 App
+Information</a></li>
+</ul></li>
+<li><a href="#tips-best-practices" id="toc-tips-best-practices">11. Tips
+&amp; Best Practices</a>
+<ul>
+<li><a href="#getting-started-tips" id="toc-getting-started-tips">11.1
+Getting Started Tips</a></li>
+<li><a href="#account-management" id="toc-account-management">11.2
+Account Management</a></li>
+<li><a href="#transaction-recording" id="toc-transaction-recording">11.3
+Transaction Recording</a></li>
+<li><a href="#budgeting" id="toc-budgeting">11.4 Budgeting</a></li>
+<li><a href="#goal-setting" id="toc-goal-setting">11.5 Goal
+Setting</a></li>
+<li><a href="#data-security" id="toc-data-security">11.6 Data
+Security</a></li>
+</ul></li>
+<li><a href="#troubleshooting" id="toc-troubleshooting">12.
+Troubleshooting</a>
+<ul>
+<li><a href="#login-issues" id="toc-login-issues">12.1 Login
+Issues</a></li>
+<li><a href="#balance-discrepancies" id="toc-balance-discrepancies">12.2
+Balance Discrepancies</a></li>
+<li><a href="#notifications-not-working" id="toc-notifications-not-working">12.3 Notifications Not
+Working</a></li>
+<li><a href="#pdf-generation-fails" id="toc-pdf-generation-fails">12.4
+PDF Generation Fails</a></li>
+<li><a href="#app-crashes" id="toc-app-crashes">12.5 App
+Crashes</a></li>
+<li><a href="#widget-not-updating" id="toc-widget-not-updating">12.6
+Widget Not Updating</a></li>
+</ul></li>
+<li><a href="#faq" id="toc-faq">13. FAQ</a>
+<ul>
+<li><a href="#general-questions" id="toc-general-questions">General
+Questions</a></li>
+<li><a href="#account-questions" id="toc-account-questions">Account
+Questions</a></li>
+<li><a href="#transaction-questions" id="toc-transaction-questions">Transaction Questions</a></li>
+<li><a href="#budget-questions" id="toc-budget-questions">Budget
+Questions</a></li>
+<li><a href="#goal-questions" id="toc-goal-questions">Goal
+Questions</a></li>
+<li><a href="#report-questions" id="toc-report-questions">Report
+Questions</a></li>
+<li><a href="#technical-questions" id="toc-technical-questions">Technical Questions</a></li>
+</ul></li>
+<li><a href="#need-more-help" id="toc-need-more-help">Need More
+Help?</a>
+<ul>
+<li><a href="#in-app-help" id="toc-in-app-help">In-App Help</a></li>
+<li><a href="#contact-support" id="toc-contact-support">Contact
+Support</a></li>
+</ul></li>
+<li><a href="#quick-reference" id="toc-quick-reference">Quick
+Reference</a>
+<ul>
+<li><a href="#common-tasks" id="toc-common-tasks">Common Tasks</a></li>
+<li><a href="#navigation" id="toc-navigation">Navigation</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="cashflow-app---user-manual">CashFlow App - User Manual</h1>
+<p><strong>Version:</strong> 1.0.0<br />
+<strong>Platform:</strong> Android &amp; iOS<br />
+<strong>Last Updated:</strong> November 2025</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#user-account">User Account</a></li>
+<li><a href="#managing-accounts">Managing Accounts</a></li>
+<li><a href="#recording-transactions">Recording Transactions</a></li>
+<li><a href="#budgets">Budgets</a></li>
+<li><a href="#financial-goals">Financial Goals</a></li>
+<li><a href="#recurring-transactions">Recurring Transactions</a></li>
+<li><a href="#reports--analytics">Reports &amp; Analytics</a></li>
+<li><a href="#notifications">Notifications</a></li>
+<li><a href="#settings--profile">Settings &amp; Profile</a></li>
+<li><a href="#tips--best-practices">Tips &amp; Best Practices</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#faq">FAQ</a></li>
+</ol>
+<hr />
+<h2 id="getting-started">1. Getting Started</h2>
+<h3 id="installation">1.1 Installation</h3>
+<p><strong>Android:</strong> 1. Download the APK file 2. Enable “Install
+from Unknown Sources” in Settings 3. Tap the APK file to install 4. Open
+the CashFlow app</p>
+<p><strong>iOS:</strong> 1. Download from TestFlight or App Store 2.
+Install the application 3. Open the CashFlow app</p>
+<h3 id="first-launch">1.2 First Launch</h3>
+<p>When you first open CashFlow, you’ll see:</p>
+<ol type="1">
+<li><strong>Welcome Screen:</strong> Introduction to the app
+features</li>
+<li><strong>Sign Up:</strong> Create your account</li>
+<li><strong>Dashboard:</strong> Your financial overview</li>
+</ol>
+<h3 id="creating-your-account">1.3 Creating Your Account</h3>
+<p><strong>Step-by-Step:</strong></p>
+<ol type="1">
+<li>Tap <strong>“Sign Up”</strong> on the welcome screen</li>
+<li>Fill in your details:
+<ul>
+<li><strong>First Name:</strong> Your first name</li>
+<li><strong>Last Name:</strong> Your last name</li>
+<li><strong>Username:</strong> Choose a unique username (for login)</li>
+<li><strong>Password:</strong> Create a secure password</li>
+<li><strong>Currency:</strong> Select your preferred currency symbol (₹,
+$, €, £, etc.)</li>
+</ul></li>
+<li>Tap <strong>“Sign Up”</strong></li>
+<li>You’ll be automatically logged in</li>
+</ol>
+<blockquote>
+<p><strong>💡 Tip:</strong> Choose a username you’ll remember
+easily!</p>
+</blockquote>
+<hr />
+<h2 id="user-account">2. User Account</h2>
+<h3 id="logging-in">2.1 Logging In</h3>
+<ol type="1">
+<li>Open the app</li>
+<li>Enter your <strong>username</strong> and
+<strong>password</strong></li>
+<li>Tap <strong>“Login”</strong></li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> The app will remember your login for future
+sessions.</p>
+</blockquote>
+<h3 id="logging-out">2.2 Logging Out</h3>
+<ol type="1">
+<li>Go to <strong>Profile</strong> (bottom navigation)</li>
+<li>Scroll down</li>
+<li>Tap <strong>“Logout”</strong></li>
+</ol>
+<hr />
+<h2 id="managing-accounts">3. Managing Accounts</h2>
+<p>Accounts represent where your money is stored (bank accounts, cash,
+credit cards, etc.).</p>
+<h3 id="viewing-accounts">3.1 Viewing Accounts</h3>
+<ol type="1">
+<li>Tap <strong>“Accounts”</strong> from the dashboard or bottom
+navigation</li>
+<li>See all your accounts with:
+<ul>
+<li>Account name</li>
+<li>Account type</li>
+<li>Current balance</li>
+<li>Bank name (if applicable)</li>
+</ul></li>
+</ol>
+<h3 id="adding-an-account">3.2 Adding an Account</h3>
+<p><strong>Step-by-Step:</strong></p>
+<ol type="1">
+<li>Go to <strong>Accounts</strong> screen</li>
+<li>Tap the <strong>“+”</strong> button</li>
+<li>Select <strong>Account Type:</strong>
+<ul>
+<li>Cash</li>
+<li>Savings Account</li>
+<li>Salary Account</li>
+<li>Current Account</li>
+<li>Credit Card</li>
+<li>Bank Account</li>
+<li>Investment</li>
+<li>Loan</li>
+<li>Other</li>
+</ul></li>
+<li>Fill in the details based on account type:</li>
+</ol>
+<p><strong>For Cash/Other:</strong> - Account name - Initial balance -
+Choose color and icon</p>
+<p><strong>For Bank Accounts (Savings/Salary/Current):</strong> -
+Account name - Bank name - Account number - Initial balance - Choose
+color and icon</p>
+<p><strong>For Credit Card:</strong> - Card name - Bank name - Last 4
+digits of card number - Credit limit - Current outstanding balance -
+Choose color and icon</p>
+<p><strong>For Loan:</strong> - Loan name - Bank/Lender name - Loan
+amount (principal) - Interest rate (annual %) - Loan tenure (months) -
+Loan start date - EMI payment day (1-31) - Choose color and icon</p>
+<ol start="5" type="1">
+<li>Tap <strong>“Add Account”</strong></li>
+</ol>
+<blockquote>
+<p><strong>💡 Tip:</strong> Use different colors for different account
+types to easily identify them!</p>
+</blockquote>
+<h3 id="editing-an-account">3.3 Editing an Account</h3>
+<ol type="1">
+<li>Go to <strong>Accounts</strong> screen</li>
+<li>Tap on the account you want to edit</li>
+<li>Modify the details</li>
+<li>Tap <strong>“Save Changes”</strong></li>
+</ol>
+<h3 id="deleting-an-account">3.4 Deleting an Account</h3>
+<ol type="1">
+<li>Go to <strong>Accounts</strong> screen</li>
+<li>Tap on the account</li>
+<li>Tap <strong>“Delete Account”</strong></li>
+<li>Confirm deletion</li>
+</ol>
+<blockquote>
+<p><strong>⚠️ Warning:</strong> Deleting an account will also delete all
+associated transactions!</p>
+</blockquote>
+<h3 id="understanding-loan-accounts">3.5 Understanding Loan
+Accounts</h3>
+<p><strong>Loan Account Features:</strong></p>
+<ul>
+<li><strong>EMI Calculation:</strong> Automatically calculated based on
+principal, rate, and tenure</li>
+<li><strong>EMI Tracking:</strong> Track how many EMIs you’ve paid</li>
+<li><strong>Remaining Balance:</strong> See how much loan is left</li>
+<li><strong>Interest Paid:</strong> View total interest paid so far</li>
+<li><strong>EMI Reminders:</strong> Get notifications 2 days before EMI
+due date</li>
+</ul>
+<p><strong>Paying an EMI:</strong> 1. When you pay an EMI, record it as
+an expense transaction 2. Go to the loan account details 3. The app will
+track your EMI payments</p>
+<hr />
+<h2 id="recording-transactions">4. Recording Transactions</h2>
+<p>Transactions are your income and expenses.</p>
+<h3 id="adding-a-transaction-quick-method">4.1 Adding a Transaction
+(Quick Method)</h3>
+<ol type="1">
+<li>Tap the <strong>“+”</strong> floating button on the dashboard</li>
+<li>Fill in:
+<ul>
+<li><strong>Title:</strong> Description (e.g., “Grocery Shopping”)</li>
+<li><strong>Amount:</strong> Transaction amount</li>
+<li><strong>Type:</strong> Income or Expense</li>
+<li><strong>Category:</strong> Select appropriate category</li>
+<li><strong>Account:</strong> Choose which account</li>
+<li><strong>Date:</strong> Transaction date</li>
+<li><strong>Tags:</strong> (Optional) Add tags</li>
+</ul></li>
+<li>Tap <strong>“Add Transaction”</strong></li>
+</ol>
+<h3 id="adding-a-transaction-multi-step-method">4.2 Adding a Transaction
+(Multi-Step Method)</h3>
+<p>For a more guided experience:</p>
+<ol type="1">
+<li>Tap <strong>“Add Transaction”</strong> from the menu</li>
+<li><strong>Step 1 - Basic Info:</strong>
+<ul>
+<li>Enter title and amount</li>
+<li>Select income or expense</li>
+</ul></li>
+<li><strong>Step 2 - Category &amp; Tags:</strong>
+<ul>
+<li>Choose category</li>
+<li>Add tags (optional)</li>
+</ul></li>
+<li><strong>Step 3 - Account &amp; Date:</strong>
+<ul>
+<li>Select account</li>
+<li>Choose date</li>
+</ul></li>
+<li>Review and tap <strong>“Add Transaction”</strong></li>
+</ol>
+<h3 id="transaction-categories">4.3 Transaction Categories</h3>
+<p><strong>Income Categories:</strong> - Salary - Business - Investments
+- Gifts - Other</p>
+<p><strong>Expense Categories:</strong> - Food &amp; Dining -
+Transportation - Shopping - Bills &amp; Utilities - Entertainment -
+Healthcare - Education - Other</p>
+<h3 id="using-tags">4.4 Using Tags</h3>
+<p>Tags help you organize transactions beyond categories.</p>
+<p><strong>Examples:</strong> - “Work” for work-related expenses -
+“Vacation” for holiday spending - “Emergency” for unexpected costs -
+“Tax-deductible” for tax purposes</p>
+<p><strong>To Add Tags:</strong> 1. Go to <strong>Tags
+Management</strong> from the menu 2. Tap <strong>“+”</strong> 3. Enter
+tag name and choose color 4. Use tags when adding transactions</p>
+<h3 id="viewing-transactions">4.5 Viewing Transactions</h3>
+<ol type="1">
+<li>Tap <strong>“Transactions”</strong> from the dashboard</li>
+<li>See all transactions with:
+<ul>
+<li>Date</li>
+<li>Title</li>
+<li>Amount (green for income, red for expense)</li>
+<li>Category</li>
+<li>Account</li>
+</ul></li>
+</ol>
+<p><strong>Filtering:</strong> - Filter by account - Filter by category
+- Filter by tags - Filter by date range - Search by title</p>
+<h3 id="editing-a-transaction">4.6 Editing a Transaction</h3>
+<ol type="1">
+<li>Go to <strong>Transactions</strong></li>
+<li>Tap on the transaction</li>
+<li>Modify details</li>
+<li>Tap <strong>“Save”</strong></li>
+</ol>
+<h3 id="deleting-a-transaction">4.7 Deleting a Transaction</h3>
+<ol type="1">
+<li>Go to <strong>Transactions</strong></li>
+<li>Tap on the transaction</li>
+<li>Tap <strong>“Delete”</strong></li>
+<li>Confirm deletion</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Deleting a transaction will update the account
+balance automatically.</p>
+</blockquote>
+<hr />
+<h2 id="budgets">5. Budgets</h2>
+<p>Budgets help you control spending by setting limits for each
+category.</p>
+<h3 id="creating-a-budget">5.1 Creating a Budget</h3>
+<ol type="1">
+<li>Go to <strong>Budgets</strong> from the dashboard</li>
+<li>Tap <strong>“+”</strong></li>
+<li>Fill in:
+<ul>
+<li><strong>Category:</strong> Choose expense category</li>
+<li><strong>Amount:</strong> Budget limit</li>
+<li><strong>Period:</strong> Monthly or Yearly</li>
+<li><strong>Start Date:</strong> When the budget begins</li>
+</ul></li>
+<li>Tap <strong>“Add Budget”</strong></li>
+</ol>
+<h3 id="tracking-budget-progress">5.2 Tracking Budget Progress</h3>
+<ol type="1">
+<li>Go to <strong>Budgets</strong></li>
+<li>See each budget with:
+<ul>
+<li>Category name</li>
+<li>Budget amount</li>
+<li>Amount spent</li>
+<li>Progress bar</li>
+<li>Percentage used</li>
+</ul></li>
+</ol>
+<p><strong>Color Indicators:</strong> - <strong>Green:</strong> Under
+budget (&lt; 80%) - <strong>Yellow:</strong> Approaching limit (80-100%)
+- <strong>Red:</strong> Over budget (&gt; 100%)</p>
+<h3 id="editing-a-budget">5.3 Editing a Budget</h3>
+<ol type="1">
+<li>Go to <strong>Budgets</strong></li>
+<li>Tap on the budget</li>
+<li>Modify details</li>
+<li>Tap <strong>“Save”</strong></li>
+</ol>
+<h3 id="deleting-a-budget">5.4 Deleting a Budget</h3>
+<ol type="1">
+<li>Go to <strong>Budgets</strong></li>
+<li>Tap on the budget</li>
+<li>Tap <strong>“Delete”</strong></li>
+<li>Confirm deletion</li>
+</ol>
+<blockquote>
+<p><strong>💡 Tip:</strong> Set realistic budgets based on your past
+spending patterns!</p>
+</blockquote>
+<hr />
+<h2 id="financial-goals">6. Financial Goals</h2>
+<p>Goals help you save for specific objectives.</p>
+<h3 id="creating-a-goal">6.1 Creating a Goal</h3>
+<ol type="1">
+<li>Go to <strong>Goals</strong> from the dashboard</li>
+<li>Tap <strong>“+”</strong></li>
+<li>Fill in:
+<ul>
+<li><strong>Goal Name:</strong> (e.g., “New Car”, “Vacation”)</li>
+<li><strong>Target Amount:</strong> How much you need</li>
+<li><strong>Current Amount:</strong> How much you’ve saved</li>
+<li><strong>Deadline:</strong> (Optional) Target date</li>
+<li><strong>Icon:</strong> Choose an icon</li>
+<li><strong>Color:</strong> Choose a color</li>
+</ul></li>
+<li>Tap <strong>“Add Goal”</strong></li>
+</ol>
+<h3 id="updating-goal-progress">6.2 Updating Goal Progress</h3>
+<ol type="1">
+<li>Go to <strong>Goals</strong></li>
+<li>Tap on the goal</li>
+<li>Update <strong>Current Amount</strong></li>
+<li>Tap <strong>“Save”</strong></li>
+</ol>
+<h3 id="viewing-goal-progress">6.3 Viewing Goal Progress</h3>
+<p>Each goal shows: - Goal name and icon - Target amount - Current
+amount - Progress bar - Percentage completed - Days remaining (if
+deadline set)</p>
+<h3 id="editing-a-goal">6.4 Editing a Goal</h3>
+<ol type="1">
+<li>Go to <strong>Goals</strong></li>
+<li>Tap on the goal</li>
+<li>Modify details</li>
+<li>Tap <strong>“Save”</strong></li>
+</ol>
+<h3 id="deleting-a-goal">6.5 Deleting a Goal</h3>
+<ol type="1">
+<li>Go to <strong>Goals</strong></li>
+<li>Tap on the goal</li>
+<li>Tap <strong>“Delete”</strong></li>
+<li>Confirm deletion</li>
+</ol>
+<blockquote>
+<p><strong>💡 Tip:</strong> Link your savings transactions to goals by
+using tags!</p>
+</blockquote>
+<hr />
+<h2 id="recurring-transactions">7. Recurring Transactions</h2>
+<p>Automate regular income or expenses.</p>
+<h3 id="creating-a-recurring-transaction">7.1 Creating a Recurring
+Transaction</h3>
+<ol type="1">
+<li>Go to <strong>Recurring Transactions</strong> from the menu</li>
+<li>Tap <strong>“+”</strong></li>
+<li>Fill in:
+<ul>
+<li><strong>Title:</strong> Description</li>
+<li><strong>Amount:</strong> Transaction amount</li>
+<li><strong>Type:</strong> Income or Expense</li>
+<li><strong>Category:</strong> Select category</li>
+<li><strong>Frequency:</strong> Daily, Weekly, Monthly, or Yearly</li>
+<li><strong>Next Due Date:</strong> When it should occur next</li>
+<li><strong>Auto-Add:</strong> Enable to automatically create
+transactions</li>
+<li><strong>Account:</strong> Select account</li>
+</ul></li>
+<li>Tap <strong>“Add”</strong></li>
+</ol>
+<h3 id="frequency-options">7.2 Frequency Options</h3>
+<ul>
+<li><strong>Daily:</strong> Every day</li>
+<li><strong>Weekly:</strong> Every 7 days</li>
+<li><strong>Monthly:</strong> Same date each month</li>
+<li><strong>Yearly:</strong> Same date each year</li>
+</ul>
+<h3 id="auto-add-feature">7.3 Auto-Add Feature</h3>
+<p>When <strong>Auto-Add</strong> is enabled: - The app automatically
+creates a transaction on the due date - The next due date is updated
+automatically - You’ll see the transaction in your transaction list</p>
+<p>When <strong>Auto-Add</strong> is disabled: - You’ll get a reminder -
+You need to manually add the transaction</p>
+<h3 id="editing-a-recurring-transaction">7.4 Editing a Recurring
+Transaction</h3>
+<ol type="1">
+<li>Go to <strong>Recurring Transactions</strong></li>
+<li>Tap on the item</li>
+<li>Modify details</li>
+<li>Tap <strong>“Save”</strong></li>
+</ol>
+<h3 id="deleting-a-recurring-transaction">7.5 Deleting a Recurring
+Transaction</h3>
+<ol type="1">
+<li>Go to <strong>Recurring Transactions</strong></li>
+<li>Tap on the item</li>
+<li>Tap <strong>“Delete”</strong></li>
+<li>Confirm deletion</li>
+</ol>
+<blockquote>
+<p><strong>💡 Tip:</strong> Use recurring transactions for rent,
+subscriptions, salary, etc.</p>
+</blockquote>
+<hr />
+<h2 id="reports-analytics">8. Reports &amp; Analytics</h2>
+<h3 id="dashboard-overview">8.1 Dashboard Overview</h3>
+<p>The dashboard shows:</p>
+<p><strong>Net Worth Section:</strong> - Total balance across all
+accounts - Bar chart showing daily/weekly/monthly/yearly trends - Toggle
+to hide/show for privacy</p>
+<p><strong>Income vs. Expense:</strong> - Current month comparison - Pie
+chart visualization - Percentage breakdown</p>
+<p><strong>Recent Transactions:</strong> - Last 5 transactions - Quick
+overview</p>
+<p><strong>Quick Access Cards:</strong> - Navigate to different
+features</p>
+<h3 id="statistics-screen">8.2 Statistics Screen</h3>
+<ol type="1">
+<li>Go to <strong>Stats</strong> from the dashboard</li>
+<li>View:
+<ul>
+<li><strong>Account Breakdown:</strong> Income and expense per
+account</li>
+<li><strong>Financial Trends:</strong> Line chart showing trends over
+time</li>
+<li><strong>Category Analysis:</strong> Pie chart of expense
+distribution</li>
+<li><strong>Top Categories:</strong> Highest spending categories</li>
+</ul></li>
+</ol>
+<p><strong>Filtering:</strong> - Select specific account - Choose date
+range - View income or expense</p>
+<h3 id="monthly-reports">8.3 Monthly Reports</h3>
+<ol type="1">
+<li>Go to <strong>Monthly Report</strong> from the dashboard</li>
+<li>Select month and year</li>
+<li>View:
+<ul>
+<li>Total income</li>
+<li>Total expenses</li>
+<li>Net savings</li>
+<li>Category breakdown</li>
+<li>Account-wise analysis</li>
+<li>All transactions for the month</li>
+</ul></li>
+</ol>
+<h3 id="generating-pdf-reports">8.4 Generating PDF Reports</h3>
+<ol type="1">
+<li>Go to <strong>Monthly Report</strong></li>
+<li>Select the month</li>
+<li>Tap <strong>“Generate PDF”</strong> or <strong>“Share
+Report”</strong></li>
+<li>The PDF includes:
+<ul>
+<li>App branding</li>
+<li>Summary cards</li>
+<li>Category breakdown with charts</li>
+<li>Detailed transaction table</li>
+</ul></li>
+<li>Share via email, messaging, or save to device</li>
+</ol>
+<h3 id="calendar-view">8.5 Calendar View</h3>
+<ol type="1">
+<li>Go to <strong>Calendar</strong> from the menu</li>
+<li>View transactions by date</li>
+<li>Tap on a date to see transactions</li>
+<li>Add transactions directly from calendar</li>
+</ol>
+<blockquote>
+<p><strong>💡 Tip:</strong> Generate monthly reports for tax purposes or
+expense tracking!</p>
+</blockquote>
+<hr />
+<h2 id="notifications">9. Notifications</h2>
+<h3 id="notification-types">9.1 Notification Types</h3>
+<p><strong>EMI Reminders:</strong> - Sent 2 days before EMI due date -
+Shows loan name and amount - Helps you prepare for payment</p>
+<p><strong>Budget Alerts:</strong> - When you exceed a budget - When
+approaching budget limit</p>
+<p><strong>Goal Reminders:</strong> - When deadline is approaching -
+When goal is achieved</p>
+<h3 id="viewing-notifications">9.2 Viewing Notifications</h3>
+<ol type="1">
+<li>Tap <strong>Notifications</strong> from the menu</li>
+<li>See all notifications</li>
+<li>Tap to mark as read</li>
+<li>Swipe to delete</li>
+</ol>
+<h3 id="notification-settings">9.3 Notification Settings</h3>
+<ol type="1">
+<li>Go to <strong>Profile</strong></li>
+<li>Tap <strong>“Notification Settings”</strong></li>
+<li>Enable/disable notification types</li>
+<li>Set notification preferences</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> You need to grant notification permission when
+first prompted.</p>
+</blockquote>
+<hr />
+<h2 id="settings-profile">10. Settings &amp; Profile</h2>
+<h3 id="viewing-profile">10.1 Viewing Profile</h3>
+<ol type="1">
+<li>Tap <strong>Profile</strong> from bottom navigation</li>
+<li>See your:
+<ul>
+<li>Name</li>
+<li>Username</li>
+<li>Currency preference</li>
+<li>App version</li>
+</ul></li>
+</ol>
+<h3 id="editing-profile">10.2 Editing Profile</h3>
+<ol type="1">
+<li>Go to <strong>Profile</strong></li>
+<li>Tap <strong>“Edit Profile”</strong></li>
+<li>Update:
+<ul>
+<li>First Name</li>
+<li>Last Name</li>
+<li>Password</li>
+<li>Currency Symbol</li>
+</ul></li>
+<li>Tap <strong>“Save Changes”</strong></li>
+</ol>
+<h3 id="changing-currency">10.3 Changing Currency</h3>
+<ol type="1">
+<li>Go to <strong>Profile</strong></li>
+<li>Tap <strong>“Edit Profile”</strong></li>
+<li>Select new currency symbol</li>
+<li>Tap <strong>“Save”</strong></li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Changing currency only affects the display
+symbol, not the values.</p>
+</blockquote>
+<h3 id="resetting-data">10.4 Resetting Data</h3>
+<p><strong>⚠️ Warning:</strong> This will delete ALL your data!</p>
+<ol type="1">
+<li>Go to <strong>Profile</strong></li>
+<li>Scroll down</li>
+<li>Tap <strong>“Reset All Data”</strong></li>
+<li>Confirm deletion</li>
+<li>You’ll be logged out</li>
+<li>All accounts, transactions, budgets, and goals will be deleted</li>
+</ol>
+<h3 id="app-information">10.5 App Information</h3>
+<ol type="1">
+<li>Go to <strong>Profile</strong></li>
+<li>View:
+<ul>
+<li>App version</li>
+<li>Privacy Policy</li>
+<li>Terms &amp; Conditions</li>
+<li>FAQ</li>
+</ul></li>
+</ol>
+<hr />
+<h2 id="tips-best-practices">11. Tips &amp; Best Practices</h2>
+<h3 id="getting-started-tips">11.1 Getting Started Tips</h3>
+<ol type="1">
+<li><strong>Start Simple:</strong> Begin with one or two accounts</li>
+<li><strong>Record Daily:</strong> Add transactions as they happen</li>
+<li><strong>Use Categories:</strong> Properly categorize for better
+insights</li>
+<li><strong>Set Budgets:</strong> Start with major expense
+categories</li>
+<li><strong>Review Weekly:</strong> Check your dashboard weekly</li>
+</ol>
+<h3 id="account-management">11.2 Account Management</h3>
+<ol type="1">
+<li><strong>Color Code:</strong> Use different colors for different
+account types</li>
+<li><strong>Regular Updates:</strong> Update balances if they drift</li>
+<li><strong>Loan Tracking:</strong> Always record EMI payments</li>
+<li><strong>Credit Cards:</strong> Track as negative balances</li>
+</ol>
+<h3 id="transaction-recording">11.3 Transaction Recording</h3>
+<ol type="1">
+<li><strong>Be Descriptive:</strong> Use clear titles</li>
+<li><strong>Immediate Entry:</strong> Record transactions right
+away</li>
+<li><strong>Use Tags:</strong> Tag transactions for better
+organization</li>
+<li><strong>Check Receipts:</strong> Verify amounts before entering</li>
+</ol>
+<h3 id="budgeting">11.4 Budgeting</h3>
+<ol type="1">
+<li><strong>Realistic Limits:</strong> Set achievable budget limits</li>
+<li><strong>Monthly Review:</strong> Review and adjust budgets
+monthly</li>
+<li><strong>Priority Categories:</strong> Budget for essentials
+first</li>
+<li><strong>Track Progress:</strong> Check budget status regularly</li>
+</ol>
+<h3 id="goal-setting">11.5 Goal Setting</h3>
+<ol type="1">
+<li><strong>Specific Goals:</strong> Define clear, specific goals</li>
+<li><strong>Realistic Targets:</strong> Set achievable target
+amounts</li>
+<li><strong>Deadlines:</strong> Use deadlines for motivation</li>
+<li><strong>Regular Updates:</strong> Update progress frequently</li>
+<li><strong>Celebrate:</strong> Acknowledge when you achieve goals</li>
+</ol>
+<h3 id="data-security">11.6 Data Security</h3>
+<ol type="1">
+<li><strong>Strong Password:</strong> Use a secure password</li>
+<li><strong>Regular Backups:</strong> Export PDF reports regularly</li>
+<li><strong>Privacy:</strong> Use the hide net worth feature in
+public</li>
+<li><strong>Logout:</strong> Logout on shared devices</li>
+</ol>
+<hr />
+<h2 id="troubleshooting">12. Troubleshooting</h2>
+<h3 id="login-issues">12.1 Login Issues</h3>
+<p><strong>Problem:</strong> Can’t log in</p>
+<p><strong>Solutions:</strong> 1. Check username and password spelling
+2. Ensure caps lock is off 3. Try resetting the app data (last
+resort)</p>
+<h3 id="balance-discrepancies">12.2 Balance Discrepancies</h3>
+<p><strong>Problem:</strong> Account balance doesn’t match</p>
+<p><strong>Solutions:</strong> 1. Check all transactions for the account
+2. Look for duplicate entries 3. Verify transaction amounts 4. Edit
+account balance if needed</p>
+<h3 id="notifications-not-working">12.3 Notifications Not Working</h3>
+<p><strong>Problem:</strong> Not receiving notifications</p>
+<p><strong>Solutions:</strong> 1. Check app notification permissions 2.
+Enable notifications in device settings 3. Check notification settings
+in app 4. Restart the app</p>
+<h3 id="pdf-generation-fails">12.4 PDF Generation Fails</h3>
+<p><strong>Problem:</strong> Can’t generate PDF report</p>
+<p><strong>Solutions:</strong> 1. Check storage permissions 2. Ensure
+enough storage space 3. Try a different month 4. Restart the app</p>
+<h3 id="app-crashes">12.5 App Crashes</h3>
+<p><strong>Problem:</strong> App keeps crashing</p>
+<p><strong>Solutions:</strong> 1. Restart your device 2. Clear app cache
+3. Reinstall the app 4. Check for updates</p>
+<h3 id="widget-not-updating">12.6 Widget Not Updating</h3>
+<p><strong>Problem:</strong> Home screen widget shows old data</p>
+<p><strong>Solutions:</strong> 1. Add a new transaction to trigger
+update 2. Remove and re-add widget 3. Restart device</p>
+<hr />
+<h2 id="faq">13. FAQ</h2>
+<h3 id="general-questions">General Questions</h3>
+<p><strong>Q: Is my data safe?</strong><br />
+A: Yes, all data is stored locally on your device. The app does not send
+data to any servers.</p>
+<p><strong>Q: Can I use the app offline?</strong><br />
+A: Yes, CashFlow works completely offline.</p>
+<p><strong>Q: Can I sync across devices?</strong><br />
+A: Currently, no. Each device has its own local database.</p>
+<p><strong>Q: How do I backup my data?</strong><br />
+A: Export monthly PDF reports. Full backup feature coming soon.</p>
+<h3 id="account-questions">Account Questions</h3>
+<p><strong>Q: How many accounts can I create?</strong><br />
+A: Unlimited accounts.</p>
+<p><strong>Q: Can I transfer money between accounts?</strong><br />
+A: Yes, create an expense in one account and income in another.</p>
+<p><strong>Q: What if I delete an account by mistake?</strong><br />
+A: Deleted accounts cannot be recovered. All associated transactions are
+also deleted.</p>
+<h3 id="transaction-questions">Transaction Questions</h3>
+<p><strong>Q: Can I edit past transactions?</strong><br />
+A: Yes, tap on any transaction to edit it.</p>
+<p><strong>Q: How do I split a transaction?</strong><br />
+A: Create separate transactions for each split amount.</p>
+<p><strong>Q: Can I attach receipts?</strong><br />
+A: Not currently. This feature is planned for future updates.</p>
+<h3 id="budget-questions">Budget Questions</h3>
+<p><strong>Q: Can I have multiple budgets for the same
+category?</strong><br />
+A: No, one budget per category per period.</p>
+<p><strong>Q: What happens when I exceed a budget?</strong><br />
+A: You’ll get a notification, but you can still add transactions.</p>
+<p><strong>Q: Can I set weekly budgets?</strong><br />
+A: Currently only monthly and yearly budgets are supported.</p>
+<h3 id="goal-questions">Goal Questions</h3>
+<p><strong>Q: Can I link transactions to goals?</strong><br />
+A: Use tags to track goal-related transactions.</p>
+<p><strong>Q: What happens when I reach a goal?</strong><br />
+A: You’ll get a notification. You can then delete or update the
+goal.</p>
+<h3 id="report-questions">Report Questions</h3>
+<p><strong>Q: Can I export data to Excel?</strong><br />
+A: Currently only PDF export is available.</p>
+<p><strong>Q: Can I customize report date ranges?</strong><br />
+A: Monthly reports are fixed to calendar months.</p>
+<h3 id="technical-questions">Technical Questions</h3>
+<p><strong>Q: Which platforms are supported?</strong><br />
+A: Android and iOS.</p>
+<p><strong>Q: What’s the minimum Android version?</strong><br />
+A: Android 5.0 (API 21) and above.</p>
+<p><strong>Q: What’s the minimum iOS version?</strong><br />
+A: iOS 12.0 and above.</p>
+<p><strong>Q: How much storage does the app use?</strong><br />
+A: Minimal - typically under 50MB including data.</p>
+<hr />
+<h2 id="need-more-help">Need More Help?</h2>
+<h3 id="in-app-help">In-App Help</h3>
+<ol type="1">
+<li>Go to <strong>Profile</strong></li>
+<li>Tap <strong>“FAQ”</strong></li>
+<li>Search for your question</li>
+</ol>
+<h3 id="contact-support">Contact Support</h3>
+<p>For additional support or feature requests, please contact the
+development team through the app store or official channels.</p>
+<hr />
+<h2 id="quick-reference">Quick Reference</h2>
+<h3 id="common-tasks">Common Tasks</h3>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Steps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Add Transaction</td>
+<td>Dashboard → + button → Fill form → Save</td>
+</tr>
+<tr>
+<td>Create Budget</td>
+<td>Budgets → + → Fill details → Save</td>
+</tr>
+<tr>
+<td>Set Goal</td>
+<td>Goals → + → Fill details → Save</td>
+</tr>
+<tr>
+<td>View Report</td>
+<td>Dashboard → Monthly Report → Select month</td>
+</tr>
+<tr>
+<td>Export PDF</td>
+<td>Monthly Report → Share Report</td>
+</tr>
+<tr>
+<td>Add Account</td>
+<td>Accounts → + → Select type → Fill details</td>
+</tr>
+<tr>
+<td>Edit Profile</td>
+<td>Profile → Edit Profile → Update → Save</td>
+</tr>
+</tbody>
+</table>
+<h3 id="navigation">Navigation</h3>
+<table>
+<thead>
+<tr>
+<th>Screen</th>
+<th>How to Access</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dashboard</td>
+<td>Bottom navigation - Home icon</td>
+</tr>
+<tr>
+<td>Accounts</td>
+<td>Bottom navigation - Accounts icon</td>
+</tr>
+<tr>
+<td>Transactions</td>
+<td>Dashboard → Transactions card</td>
+</tr>
+<tr>
+<td>Stats</td>
+<td>Dashboard → Stats card</td>
+</tr>
+<tr>
+<td>Profile</td>
+<td>Bottom navigation - Profile icon</td>
+</tr>
+<tr>
+<td>Budgets</td>
+<td>Dashboard → Budgets card</td>
+</tr>
+<tr>
+<td>Goals</td>
+<td>Dashboard → Goals card</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>Thank you for using CashFlow!</strong></p>
+<p>We hope this app helps you achieve your financial goals. Happy
+budgeting! 💰</p>
+<hr />
+<p><strong>Version:</strong> 1.0.0<br />
+<strong>Last Updated:</strong> November 2025<br />
+<strong>© 2025 CashFlow App</strong></p>
+</body>
+</html>

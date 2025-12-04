@@ -1,0 +1,104 @@
+Analyzing cashflow_app...                                       
+
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_ar.dart:684:42 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_bn.dart:684:40 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_de.dart:690:42 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_es.dart:690:48 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_fr.dart:696:51 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_gu.dart:684:44 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_it.dart:696:46 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_ja.dart:682:18 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_kn.dart:684:21 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_ko.dart:682:16 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_ml.dart:685:16 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_mr.dart:684:20 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_pl.dart:684:43 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_pt.dart:696:50 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_ru.dart:684:47 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_ta.dart:684:16 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_te.dart:684:31 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_th.dart:684:44 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_tr.dart:684:16 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_ur.dart:684:29 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_vi.dart:684:42 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_zh.dart:681:21 • undefined_identifier
+  error • Undefined name 'accountName' • lib/l10n/app_localizations_zh.dart:1316:21 • undefined_identifier
+   info • Don't invoke 'print' in production code • lib/providers/account_provider.dart:68:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/account_provider.dart:82:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/account_provider.dart:102:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/account_provider.dart:127:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:36:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:54:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:62:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:65:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:80:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:82:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:94:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:106:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:115:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:119:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:129:9 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:135:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/auth_provider.dart:191:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/goal_provider.dart:141:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/goal_provider.dart:216:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/notification_provider.dart:29:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/notification_provider.dart:56:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/notification_provider.dart:83:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/notification_provider.dart:99:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/providers/notification_provider.dart:115:7 • avoid_print
+   info • The constant name 'LARGE_TRANSACTION_THRESHOLD' isn't a lowerCamelCase identifier • lib/providers/transaction_provider.dart:17:23 • constant_identifier_names
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/screens/add_account_screen.dart:846:15 • deprecated_member_use
+   info • 'value' is deprecated and shouldn't be used. Use component accessors like .r or .g, or toARGB32 for an explicit conversion • lib/screens/add_category_screen.dart:24:36 • deprecated_member_use
+   info • Unnecessary use of 'toList' in a spread • lib/screens/add_edit_budget_screen.dart:250:30 • unnecessary_to_list_in_spreads
+   info • Statements in an if should be enclosed in a block • lib/screens/add_edit_goal_screen.dart:298:39 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/screens/add_edit_goal_screen.dart:300:39 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/screens/add_edit_goal_screen.dart:346:39 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/screens/add_edit_goal_screen.dart:348:39 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/screens/add_edit_recurring_transaction_screen.dart:311:39 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/screens/add_edit_recurring_transaction_screen.dart:313:39 • curly_braces_in_flow_control_structures
+   info • Unnecessary use of 'toList' in a spread • lib/screens/add_edit_recurring_transaction_screen.dart:460:30 • unnecessary_to_list_in_spreads
+   info • Unnecessary use of 'toList' in a spread • lib/screens/add_edit_recurring_transaction_screen.dart:609:32 • unnecessary_to_list_in_spreads
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/screens/add_edit_recurring_transaction_screen.dart:648:35 • deprecated_member_use
+   info • 'value' is deprecated and shouldn't be used. Use component accessors like .r or .g, or toARGB32 for an explicit conversion • lib/screens/add_edit_tag_screen.dart:70:33 • deprecated_member_use
+   info • 'value' is deprecated and shouldn't be used. Use component accessors like .r or .g, or toARGB32 for an explicit conversion • lib/screens/add_edit_tag_screen.dart:84:33 • deprecated_member_use
+   info • The import of 'dart:ui' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/add_transaction_screen.dart:1:8 • unnecessary_import
+   info • 'dialogBackgroundColor' is deprecated and shouldn't be used. Use DialogThemeData.backgroundColor instead. This feature was deprecated after v3.27.0-0.1.pre • lib/screens/add_transaction_screen.dart:177:13 • deprecated_member_use
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/screens/add_transaction_screen.dart:544:45 • deprecated_member_use
+   info • Unnecessary use of 'toList' in a spread • lib/screens/add_transaction_screen_multistep.dart:794:28 • unnecessary_to_list_in_spreads
+   info • 'value' is deprecated and shouldn't be used. Use component accessors like .r or .g, or toARGB32 for an explicit conversion • lib/screens/categories_screen.dart:155:43 • deprecated_member_use
+   info • The import of 'dart:ui' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/dashboard_screen.dart:1:8 • unnecessary_import
+   info • Don't use 'BuildContext's across async gaps • lib/screens/dashboard_screen.dart:48:36 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/dashboard_screen.dart:50:9 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/dashboard_screen.dart:54:9 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/dashboard_screen.dart:58:9 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/dashboard_screen.dart:63:11 • use_build_context_synchronously
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/screens/edit_account_screen.dart:693:15 • deprecated_member_use
+  error • The argument type 'String' can't be assigned to the parameter type 'int'.  • lib/screens/edit_account_screen.dart:821:29 • argument_type_not_assignable
+  error • Too many positional arguments: 1 expected, but 2 found • lib/screens/edit_account_screen.dart:822:29 • extra_positional_arguments
+  error • The expression doesn't evaluate to a function, so it can't be invoked • lib/screens/edit_account_screen.dart:824:27 • invocation_of_non_function_expression
+   info • Don't use 'BuildContext's across async gaps • lib/screens/edit_account_screen.dart:885:11 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/goals_screen.dart:30:39 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/goals_screen.dart:426:49 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/goals_screen.dart:428:37 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/goals_screen.dart:432:49 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/goals_screen.dart:434:37 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/screens/insights_screen.dart:21:9 • use_build_context_synchronously
+   info • The import of 'dart:ui' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/login_screen.dart:1:8 • unnecessary_import
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/login_screen.dart:484:21 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/login_screen.dart:485:50 • use_build_context_synchronously
+   info • The import of 'dart:ui' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/monthly_report_screen.dart:1:8 • unnecessary_import
+   info • Don't invoke 'print' in production code • lib/screens/monthly_report_screen.dart:55:29 • avoid_print
+   info • Don't invoke 'print' in production code • lib/screens/monthly_report_screen.dart:59:27 • avoid_print
+   info • Don't invoke 'print' in production code • lib/screens/monthly_report_screen.dart:79:27 • avoid_print
+   info • Don't invoke 'print' in production code • lib/screens/monthly_report_screen.dart:89:27 • avoid_print
+   info • Don't invoke 'print' in production code • lib/screens/monthly_report_screen.dart:105:29 • avoid_print
+   info • Don't invoke 'print' in production code • lib/screens/monthly_report_screen.dart:115:29 • avoid_print
+   info • Don't invoke 'print' in production code • lib/screens/monthly_report_screen.dart:117:29 • avoid_print
+   info • Don't invoke 'print' in production code • lib/screens/monthly_report_screen.dart:118:29 • avoid_print
+   info • Unnecessary use of 'toList' in a spread • lib/screens/monthly_report_screen.dart:425:30 • unnecessary_to_list_in_spreads
+   info • The import of 'dart:ui' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/notifications_screen.dart:1:8 • unnecessary_import
+   info • The import of 'dart:ui' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/screens/profile_screen.dart:1:8 • unnecessary_import
+   info • Use a 'SizedBox' to add whitespace to a layout • lib/screens/stats_screen.dart:511:43 • sized_box_for_whitespace
+   info • Parameter 'key' could be a super parameter • lib/widgets/payment_mode_selector.dart:7:9 • use_super_parameters
+
