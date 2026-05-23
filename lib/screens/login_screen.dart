@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../providers/auth_provider.dart';
 import '../screens/signup_screen.dart';
+import '../services/demo_seeder.dart';
 import '../utils/app_colors.dart';
 import '../utils/glass_snackbar.dart';
 import '../utils/validators.dart';
@@ -90,6 +91,66 @@ class _LoginScreenState extends State<LoginScreen>
         GlassSnackBar.showError(
           context,
           message: AppLocalizations.of(context)!.invalidCredentials,
+        );
+      }
+    }
+  }
+
+  void _seedAndLoginDemo() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    // 1. Show dynamic seeding loader
+    if (mounted) {
+      GlassSnackBar.showInfo(
+        context,
+        message: "Seeding realistic financial data ledger...",
+      );
+    }
+
+    // 2. Try to sign up demo user; if username exists, simply proceed to login
+    bool success = await authProvider.signup(
+      "Jibin",
+      "Johny",
+      "demo",
+      "password",
+      "₹",
+    );
+
+    if (!success) {
+      success = await authProvider.login("demo", "password");
+    }
+
+    if (success && authProvider.currentUser != null) {
+      final demoUserId = authProvider.currentUser!.id;
+      final currency = authProvider.currentUser!.currency;
+
+      try {
+        // 3. Seed 30+ highly-detailed, dynamic ledger transactions relative to today
+        await DemoSeeder.seedDemoData(demoUserId, currency);
+
+        if (mounted) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (_) => const MainScreen()),
+          );
+
+          GlassSnackBar.showSuccess(
+            context,
+            message: "App ledger successfully seeded! Welcome to CashFlow.",
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          GlassSnackBar.showError(
+            context,
+            message: "Data seeding failed: $e",
+          );
+        }
+      }
+    } else {
+      if (mounted) {
+        GlassSnackBar.showError(
+          context,
+          message: "Failed to authenticate demo user account.",
         );
       }
     }
@@ -469,7 +530,49 @@ class _LoginScreenState extends State<LoginScreen>
                           ),
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 20),
+
+
+                      if (kDebugMode) ...[
+                        const SizedBox(height: 20),
+
+                        // Explore Demo Mode Button
+                        SizedBox(
+                          width: double.infinity,
+                          height: 54,
+                          child: OutlinedButton.icon(
+                            onPressed: _seedAndLoginDemo,
+                            icon: const Icon(
+                              Icons.explore_outlined,
+                              color: AppColors.secondary,
+                              size: 20,
+                            ),
+                            label: Text(
+                              "EXPLORE IN DEMO MODE",
+                              style: GoogleFonts.outfit(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                letterSpacing: 1.0,
+                              ),
+                            ),
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                color: AppColors.secondary.withOpacity(0.3),
+                                width: 1.5,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              backgroundColor: Colors.white.withOpacity(0.02),
+                              shadowColor: Colors.transparent,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                      ] else ...[
+                        const SizedBox(height: 32),
+                      ],
 
                       // Premium Styled Sign Up Redirect
                       Row(
