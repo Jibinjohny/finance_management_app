@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../providers/auth_provider.dart';
 import '../providers/language_provider.dart';
 import '../utils/app_colors.dart';
@@ -21,7 +22,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
@@ -32,23 +33,36 @@ class _SignupScreenState extends State<SignupScreen>
 
   late AnimationController _floatingController;
   late Animation<double> _floatingAnimation;
+  late AnimationController _buttonScaleController;
+
+  bool _isPasswordObscured = true;
 
   @override
   void initState() {
     super.initState();
+    
     _floatingController = AnimationController(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 4),
       vsync: this,
     )..repeat(reverse: true);
 
-    _floatingAnimation = Tween<double>(begin: -10, end: 10).animate(
+    _floatingAnimation = Tween<double>(begin: -8, end: 8).animate(
       CurvedAnimation(parent: _floatingController, curve: Curves.easeInOut),
+    );
+
+    _buttonScaleController = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+      lowerBound: 0.95,
+      upperBound: 1.0,
+      value: 1.0,
     );
   }
 
   @override
   void dispose() {
     _floatingController.dispose();
+    _buttonScaleController.dispose();
     _firstNameController.dispose();
     _lastNameController.dispose();
     _usernameController.dispose();
@@ -75,6 +89,8 @@ class _SignupScreenState extends State<SignupScreen>
   }
 
   void _signup() async {
+    _buttonScaleController.reverse();
+
     final firstName = _firstNameController.text.trim();
     final lastName = _lastNameController.text.trim();
     final username = _usernameController.text.trim();
@@ -84,6 +100,8 @@ class _SignupScreenState extends State<SignupScreen>
       context,
       listen: false,
     ).signup(firstName, lastName, username, password, _selectedCurrency);
+
+    _buttonScaleController.forward();
 
     if (success) {
       if (mounted) {
@@ -106,368 +124,410 @@ class _SignupScreenState extends State<SignupScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Animated Gradient Background
-          AnimatedContainer(
-            duration: Duration(milliseconds: 500),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF1A1A2E),
-                  Color(0xFF16213E),
-                  Color(0xFF0F3460),
-                ],
+      backgroundColor: AppColors.background,
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Stack(
+          children: [
+            // Rich Ambient Gradient Background
+            Positioned.fill(
+              child: Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      Color(0xFF1A1A2E),
+                      Color(0xFF16213E),
+                      Color(0xFF0F3460),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
 
-          // Animated Background Blobs
-          AnimatedBuilder(
-            animation: _floatingAnimation,
-            builder: (context, child) {
-              return Positioned(
-                top: -50 + _floatingAnimation.value,
-                right: -50,
-                child: Container(
-                  width: 200,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        AppColors.primary.withValues(alpha: 0.4),
-                        AppColors.primary.withValues(alpha: 0.1),
-                      ],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.3),
-                        blurRadius: 100,
-                        spreadRadius: 50,
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-          AnimatedBuilder(
-            animation: _floatingAnimation,
-            builder: (context, child) {
-              return Positioned(
-                bottom: 100 - _floatingAnimation.value,
-                left: -50,
-                child: Container(
-                  width: 200,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(
-                      colors: [
-                        AppColors.secondary.withValues(alpha: 0.4),
-                        AppColors.secondary.withValues(alpha: 0.1),
-                      ],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.secondary.withValues(alpha: 0.3),
-                        blurRadius: 100,
-                        spreadRadius: 50,
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
+            // Pulsing Glowing Ambient Backdrops
+            ..._buildAnimatedBlobs(),
 
-          // Main Content
-          SafeArea(
-            child: Column(
-              children: [
-                // Header with Back Button (only for step 2)
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  child: Row(
-                    children: [
-                      if (_currentStep > 0)
-                        IconButton(
-                          icon: Icon(
-                            Icons.arrow_back_ios_new,
-                            color: Colors.white,
-                          ),
-                          onPressed: _prevStep,
-                        )
-                      else
-                        SizedBox(width: 48), // Placeholder for alignment
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Text(
-                              _currentStep == 0
-                                  ? AppLocalizations.of(context)!.step1Title
-                                  : AppLocalizations.of(context)!.step2Title,
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              _currentStep == 0
-                                  ? AppLocalizations.of(context)!.step1Subtitle
-                                  : AppLocalizations.of(context)!.step2Subtitle,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 48), // Balance the back button
-                    ],
-                  ),
-                ),
-
-                // Progress Indicator
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child: Container(
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: _currentStep >= 1
-                                ? AppColors.primary
-                                : Colors.white.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.all(24),
-                    child: Column(
+            // Main Content
+            SafeArea(
+              child: Column(
+                children: [
+                  // App bar and navigation
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    child: Row(
                       children: [
-                        SizedBox(height: 20),
-                        // App Logo/Icon (Smaller in wizard)
-                        Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.primary.withValues(alpha: 0.5),
-                                blurRadius: 20,
-                                spreadRadius: 5,
+                        _currentStep > 0
+                            ? IconButton(
+                                icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
+                                onPressed: _prevStep,
+                              )
+                            : IconButton(
+                                icon: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
+                                onPressed: () => Navigator.of(context).pop(),
+                              ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                _currentStep == 0
+                                    ? AppLocalizations.of(context)!.step1Title.toUpperCase()
+                                    : AppLocalizations.of(context)!.step2Title.toUpperCase(),
+                                style: GoogleFonts.outfit(
+                                  color: AppColors.secondary,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.5,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                _currentStep == 0
+                                    ? AppLocalizations.of(context)!.step1Subtitle
+                                    : AppLocalizations.of(context)!.step2Subtitle,
+                                style: GoogleFonts.outfit(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ],
                           ),
-                          child: ClipOval(
-                            child: Image.asset(
-                              'assets/icon/app_icon.png',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
                         ),
-                        SizedBox(height: 32),
+                        const SizedBox(width: 48), // Balancing spacer
+                      ],
+                    ),
+                  ),
 
-                        // Form Content
-                        GlassContainer(
-                          padding: EdgeInsets.all(28),
-                          borderRadius: BorderRadius.circular(24),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              children: [
-                                if (_currentStep == 0) ...[
-                                  // Step 1: Basic Details
-                                  _buildTextField(
-                                    controller: _firstNameController,
-                                    hint: AppLocalizations.of(
-                                      context,
-                                    )!.firstName,
-                                    icon: Icons.person_outline,
-                                    validator: Validators.validateName,
-                                  ),
-                                  SizedBox(height: 16),
-                                  _buildTextField(
-                                    controller: _lastNameController,
-                                    hint: AppLocalizations.of(
-                                      context,
-                                    )!.lastName,
-                                    icon: Icons.person_outline,
-                                    validator: Validators.validateName,
-                                  ),
-                                  SizedBox(height: 16),
-                                  _buildTextField(
-                                    controller: _usernameController,
-                                    hint: AppLocalizations.of(
-                                      context,
-                                    )!.username,
-                                    icon: Icons.alternate_email,
-                                    validator: Validators.validateUsername,
-                                  ),
-                                  SizedBox(height: 16),
-                                  _buildTextField(
-                                    controller: _passwordController,
-                                    hint: AppLocalizations.of(
-                                      context,
-                                    )!.password,
-                                    icon: Icons.lock_outline,
-                                    isPassword: true,
-                                    validator: Validators.validatePassword,
-                                  ),
-                                ] else ...[
-                                  // Step 2: Preferences
-                                  _buildCurrencySelector(),
-                                  SizedBox(height: 16),
-                                  _buildLanguageSelector(),
-                                  SizedBox(height: 32),
-                                  _buildWhySignupInfo(),
-                                ],
-
-                                SizedBox(height: 32),
-
-                                // Action Button
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 56,
-                                  child: Consumer<AuthProvider>(
-                                    builder: (context, auth, child) {
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            16,
-                                          ),
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              AppColors.primary,
-                                              AppColors.primary.withValues(
-                                                alpha: 0.8,
-                                              ),
-                                            ],
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: AppColors.primary
-                                                  .withValues(alpha: 0.4),
-                                              blurRadius: 20,
-                                              offset: Offset(0, 10),
-                                            ),
-                                          ],
-                                        ),
-                                        child: ElevatedButton(
-                                          onPressed: auth.isLoading
-                                              ? null
-                                              : (_currentStep == 0
-                                                    ? _nextStep
-                                                    : _signup),
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.transparent,
-                                            shadowColor: Colors.transparent,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                            ),
-                                          ),
-                                          child: auth.isLoading
-                                              ? SizedBox(
-                                                  height: 24,
-                                                  width: 24,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                        color: Colors.white,
-                                                        strokeWidth: 2.5,
-                                                      ),
-                                                )
-                                              : Text(
-                                                  _currentStep == 0
-                                                      ? AppLocalizations.of(
-                                                          context,
-                                                        )!.nextButton
-                                                      : AppLocalizations.of(
-                                                          context,
-                                                        )!.signup,
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                    letterSpacing: 0.5,
-                                                  ),
-                                                ),
-                                        ),
-                                      );
-                                    },
-                                  ),
+                  // Cozy Step Progress bar
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(2),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.primary.withOpacity(0.3),
+                                  blurRadius: 4,
                                 ),
                               ],
                             ),
                           ),
                         ),
-                        SizedBox(height: 24),
-
-                        // Login Link
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.alreadyHaveAccount,
-                              style: TextStyle(
-                                color: Colors.white60,
-                                fontSize: 14,
-                              ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: _currentStep >= 1
+                                  ? AppColors.primary
+                                  : Colors.white.withOpacity(0.08),
+                              borderRadius: BorderRadius.circular(2),
+                              boxShadow: _currentStep >= 1
+                                  ? [
+                                      BoxShadow(
+                                        color: AppColors.primary.withOpacity(0.3),
+                                        blurRadius: 4,
+                                      ),
+                                    ]
+                                  : null,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(
-                                AppLocalizations.of(context)!.login,
-                                style: TextStyle(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                        SizedBox(height: 20),
                       ],
                     ),
                   ),
-                ),
-              ],
+
+                  Expanded(
+                    child: Center(
+                      child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          children: [
+                            // Glowing App Logo
+                            Container(
+                              width: 70,
+                              height: 70,
+                              padding: const EdgeInsets.all(2.5),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppColors.primary,
+                                    AppColors.secondary,
+                                  ],
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.primary.withOpacity(0.25),
+                                    blurRadius: 25,
+                                    spreadRadius: 1,
+                                  ),
+                                ],
+                              ),
+                              child: Container(
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Color(0xFF0F1016),
+                                ),
+                                child: ClipOval(
+                                  child: Image.asset(
+                                    'assets/icon/app_icon.png',
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Icon(
+                                        Icons.account_balance_wallet_outlined,
+                                        size: 30,
+                                        color: AppColors.primary,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            
+                            const SizedBox(height: 32),
+
+                            // Frosted Glass Register Wizard Card
+                            GlassContainer(
+                              padding: const EdgeInsets.all(28),
+                              borderRadius: BorderRadius.circular(28),
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (_currentStep == 0) ...[
+                                      // First Name Field
+                                      Text(
+                                        "FIRST NAME",
+                                        style: GoogleFonts.outfit(
+                                          color: AppColors.secondary.withOpacity(0.8),
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1.5,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      _buildTextField(
+                                        controller: _firstNameController,
+                                        hint: AppLocalizations.of(context)!.firstName,
+                                        icon: Icons.person_outline_rounded,
+                                        validator: Validators.validateName,
+                                        textInputAction: TextInputAction.next,
+                                      ),
+                                      const SizedBox(height: 18),
+
+                                      // Last Name Field
+                                      Text(
+                                        "LAST NAME",
+                                        style: GoogleFonts.outfit(
+                                          color: AppColors.secondary.withOpacity(0.8),
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1.5,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      _buildTextField(
+                                        controller: _lastNameController,
+                                        hint: AppLocalizations.of(context)!.lastName,
+                                        icon: Icons.person_outline_rounded,
+                                        validator: Validators.validateName,
+                                        textInputAction: TextInputAction.next,
+                                      ),
+                                      const SizedBox(height: 18),
+
+                                      // Username Field
+                                      Text(
+                                        "USERNAME",
+                                        style: GoogleFonts.outfit(
+                                          color: AppColors.secondary.withOpacity(0.8),
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1.5,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      _buildTextField(
+                                        controller: _usernameController,
+                                        hint: AppLocalizations.of(context)!.username,
+                                        icon: Icons.alternate_email_rounded,
+                                        validator: Validators.validateUsername,
+                                        textInputAction: TextInputAction.next,
+                                      ),
+                                      const SizedBox(height: 18),
+
+                                      // Password Field
+                                      Text(
+                                        "PASSWORD",
+                                        style: GoogleFonts.outfit(
+                                          color: AppColors.secondary.withOpacity(0.8),
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1.5,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      _buildTextField(
+                                        controller: _passwordController,
+                                        hint: AppLocalizations.of(context)!.password,
+                                        icon: Icons.lock_outline_rounded,
+                                        isPassword: true,
+                                        validator: Validators.validatePassword,
+                                        textInputAction: TextInputAction.done,
+                                      ),
+                                    ] else ...[
+                                      // Step 2: Preferences
+                                      Text(
+                                        "PRIMARY LEDGER CURRENCY",
+                                        style: GoogleFonts.outfit(
+                                          color: AppColors.secondary.withOpacity(0.8),
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1.5,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      _buildCurrencySelector(),
+                                      const SizedBox(height: 20),
+
+                                      Text(
+                                        "APPLICATION LANGUAGE",
+                                        style: GoogleFonts.outfit(
+                                          color: AppColors.secondary.withOpacity(0.8),
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1.5,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      _buildLanguageSelector(),
+                                      const SizedBox(height: 32),
+                                      
+                                      _buildWhySignupInfo(),
+                                    ],
+
+                                    const SizedBox(height: 32),
+
+                                    // Primary Action button
+                                    ScaleTransition(
+                                      scale: _buttonScaleController,
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        height: 56,
+                                        child: Consumer<AuthProvider>(
+                                          builder: (context, auth, child) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(16),
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    AppColors.primary,
+                                                    const Color(0xFF5046E5),
+                                                  ],
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: AppColors.primary.withOpacity(0.35),
+                                                    blurRadius: 20,
+                                                    offset: const Offset(0, 8),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: ElevatedButton(
+                                                onPressed: auth.isLoading
+                                                    ? null
+                                                    : (_currentStep == 0 ? _nextStep : _signup),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.transparent,
+                                                  shadowColor: Colors.transparent,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(16),
+                                                  ),
+                                                ),
+                                                child: auth.isLoading
+                                                    ? const SizedBox(
+                                                        height: 24,
+                                                        width: 24,
+                                                        child: CircularProgressIndicator(
+                                                          color: Colors.white,
+                                                          strokeWidth: 2.5,
+                                                        ),
+                                                      )
+                                                    : Text(
+                                                        _currentStep == 0
+                                                            ? AppLocalizations.of(context)!.nextButton
+                                                            : AppLocalizations.of(context)!.signup,
+                                                        style: GoogleFonts.outfit(
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Colors.white,
+                                                          letterSpacing: 0.5,
+                                                        ),
+                                                      ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            
+                            const SizedBox(height: 32),
+
+                            // Already have account redirect
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.alreadyHaveAccount,
+                                  style: GoogleFonts.inter(
+                                    color: Colors.white.withOpacity(0.6),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    AppLocalizations.of(context)!.login,
+                                    style: GoogleFonts.outfit(
+                                      color: AppColors.secondary,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      letterSpacing: 0.3,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -478,52 +538,75 @@ class _SignupScreenState extends State<SignupScreen>
     required IconData icon,
     bool isPassword = false,
     String? Function(String?)? validator,
+    TextInputAction textInputAction = TextInputAction.next,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          colors: [
-            Colors.white.withValues(alpha: 0.05),
-            Colors.white.withValues(alpha: 0.02),
-          ],
-        ),
-        border: Border.all(
-          color: Colors.white.withValues(alpha: 0.1),
-          width: 1,
-        ),
+    return TextFormField(
+      controller: controller,
+      obscureText: isPassword && _isPasswordObscured,
+      style: GoogleFonts.inter(
+        color: Colors.white,
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
       ),
-      child: TextFormField(
-        controller: controller,
-        obscureText: isPassword,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
+      validator: validator,
+      textInputAction: textInputAction,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.03),
+        hintText: hint,
+        hintStyle: GoogleFonts.inter(
+          color: Colors.white.withOpacity(0.3),
+          fontSize: 14,
         ),
-        validator: validator,
-        decoration: InputDecoration(
-          hintText: hint,
-          hintStyle: TextStyle(
-            color: Colors.white.withValues(alpha: 0.4),
-            fontSize: 15,
+        prefixIcon: Icon(
+          icon,
+          color: AppColors.primary.withOpacity(0.7),
+          size: 18,
+        ),
+        suffixIcon: isPassword
+            ? IconButton(
+                icon: Icon(
+                  _isPasswordObscured
+                      ? Icons.visibility_off_outlined
+                      : Icons.visibility_outlined,
+                  color: Colors.white.withOpacity(0.4),
+                  size: 18,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _isPasswordObscured = !_isPasswordObscured;
+                  });
+                },
+              )
+            : null,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(
+            color: Colors.white.withOpacity(0.08),
+            width: 1.2,
           ),
-          border: InputBorder.none,
-          prefixIcon: Container(
-            margin: EdgeInsets.all(12),
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.primary,
-                  AppColors.primary.withValues(alpha: 0.7),
-                ],
-              ),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, color: Colors.white, size: 20),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(
+            color: AppColors.primary,
+            width: 1.5,
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide(
+            color: AppColors.error.withOpacity(0.4),
+            width: 1.2,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(
+            color: AppColors.error,
+            width: 1.5,
+          ),
         ),
       ),
     );
@@ -533,15 +616,10 @@ class _SignupScreenState extends State<SignupScreen>
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        gradient: LinearGradient(
-          colors: [
-            Colors.white.withValues(alpha: 0.05),
-            Colors.white.withValues(alpha: 0.02),
-          ],
-        ),
+        color: Colors.white.withOpacity(0.03),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.1),
-          width: 1,
+          color: Colors.white.withOpacity(0.08),
+          width: 1.2,
         ),
       ),
       child: GestureDetector(
@@ -562,7 +640,7 @@ class _SignupScreenState extends State<SignupScreen>
           }
         },
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -570,25 +648,25 @@ class _SignupScreenState extends State<SignupScreen>
                 child: Row(
                   children: [
                     Container(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.2),
+                        color: AppColors.primary.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
                         _selectedCurrency,
-                        style: TextStyle(
+                        style: GoogleFonts.outfit(
                           fontWeight: FontWeight.bold,
                           color: AppColors.primary,
                           fontSize: 16,
                         ),
                       ),
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         CurrencyHelper.getName(_selectedCurrency),
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
@@ -599,7 +677,7 @@ class _SignupScreenState extends State<SignupScreen>
                   ],
                 ),
               ),
-              Icon(Icons.arrow_drop_down, color: Colors.white70),
+              Icon(Icons.unfold_more_rounded, color: Colors.white.withOpacity(0.6), size: 20),
             ],
           ),
         ),
@@ -610,19 +688,14 @@ class _SignupScreenState extends State<SignupScreen>
   Widget _buildLanguageSelector() {
     return Consumer<LanguageProvider>(
       builder: (context, languageProvider, child) {
-        final currentLocale = languageProvider.locale ?? Locale('en');
+        final currentLocale = languageProvider.locale ?? const Locale('en');
         return Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            gradient: LinearGradient(
-              colors: [
-                Colors.white.withValues(alpha: 0.05),
-                Colors.white.withValues(alpha: 0.02),
-              ],
-            ),
+            color: Colors.white.withOpacity(0.03),
             border: Border.all(
-              color: Colors.white.withValues(alpha: 0.1),
-              width: 1,
+              color: Colors.white.withOpacity(0.08),
+              width: 1.2,
             ),
           ),
           child: GestureDetector(
@@ -641,7 +714,7 @@ class _SignupScreenState extends State<SignupScreen>
               }
             },
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -649,25 +722,25 @@ class _SignupScreenState extends State<SignupScreen>
                     child: Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: AppColors.primary.withValues(alpha: 0.2),
+                            color: AppColors.primary.withOpacity(0.15),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             currentLocale.languageCode.toUpperCase(),
-                            style: TextStyle(
+                            style: GoogleFonts.outfit(
                               fontWeight: FontWeight.bold,
                               color: AppColors.primary,
                               fontSize: 16,
                             ),
                           ),
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         Expanded(
                           child: Text(
                             LanguageHelper.getName(currentLocale.languageCode),
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                               color: Colors.white,
                               fontSize: 15,
                               fontWeight: FontWeight.w500,
@@ -678,7 +751,7 @@ class _SignupScreenState extends State<SignupScreen>
                       ],
                     ),
                   ),
-                  Icon(Icons.arrow_drop_down, color: Colors.white70),
+                  Icon(Icons.unfold_more_rounded, color: Colors.white.withOpacity(0.6), size: 20),
                 ],
               ),
             ),
@@ -694,25 +767,37 @@ class _SignupScreenState extends State<SignupScreen>
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            backgroundColor: Color(0xFF1A1A2E),
+            backgroundColor: const Color(0xFF0F1016),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              side: BorderSide(color: Colors.white10),
+              borderRadius: BorderRadius.circular(24),
+              side: BorderSide(color: Colors.white.withOpacity(0.08)),
             ),
             title: Text(
               AppLocalizations.of(context)!.whyLoginTitle,
-              style: TextStyle(color: Colors.white),
+              style: GoogleFonts.outfit(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             content: SingleChildScrollView(
               child: Text(
                 AppLocalizations.of(context)!.whyLoginContent,
-                style: TextStyle(color: Colors.white70),
+                style: GoogleFonts.inter(
+                  color: Colors.white.withOpacity(0.7),
+                  height: 1.5,
+                ),
               ),
             ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text(AppLocalizations.of(context)!.whyLoginAction),
+                child: Text(
+                  AppLocalizations.of(context)!.whyLoginAction,
+                  style: GoogleFonts.outfit(
+                    color: AppColors.secondary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
@@ -721,18 +806,68 @@ class _SignupScreenState extends State<SignupScreen>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.info_outline, color: Colors.white38, size: 14),
-          SizedBox(width: 4),
+          Icon(Icons.info_outline, color: AppColors.secondary.withOpacity(0.8), size: 14),
+          const SizedBox(width: 6),
           Text(
             AppLocalizations.of(context)!.whyNeedSignup,
-            style: TextStyle(
-              color: Colors.white38,
+            style: GoogleFonts.inter(
+              color: Colors.white.withOpacity(0.5),
               fontSize: 12,
+              fontWeight: FontWeight.w500,
               decoration: TextDecoration.underline,
             ),
           ),
         ],
       ),
     );
+  }
+
+  List<Widget> _buildAnimatedBlobs() {
+    return [
+      AnimatedBuilder(
+        animation: _floatingAnimation,
+        builder: (context, child) {
+          return Positioned(
+            top: -60 + _floatingAnimation.value * 1.5,
+            right: -60,
+            child: Container(
+              width: 250,
+              height: 250,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.primary.withOpacity(0.35),
+                    AppColors.primary.withOpacity(0.0),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+      AnimatedBuilder(
+        animation: _floatingAnimation,
+        builder: (context, child) {
+          return Positioned(
+            bottom: 60 - _floatingAnimation.value * 1.5,
+            left: -60,
+            child: Container(
+              width: 280,
+              height: 280,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.secondary.withOpacity(0.35),
+                    AppColors.secondary.withOpacity(0.0),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    ];
   }
 }

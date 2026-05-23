@@ -223,22 +223,31 @@ class _AppLifecycleManagerState extends State<AppLifecycleManager>
         GlobalCupertinoLocalizations.delegate,
       ],
       builder: (context, child) {
-        return Stack(
-          children: [
-            if (child != null)
-              ScrollConfiguration(
-                behavior: const ScrollBehavior().copyWith(overscroll: false),
-                child: child,
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: const SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light, // For Android (white icons)
+            statusBarBrightness: Brightness.dark, // For iOS (white icons)
+            systemNavigationBarColor: Colors.transparent,
+            systemNavigationBarIconBrightness: Brightness.light,
+          ),
+          child: Stack(
+            children: [
+              if (child != null)
+                ScrollConfiguration(
+                  behavior: const ScrollBehavior().copyWith(overscroll: false),
+                  child: child,
+                ),
+              Consumer<SecurityProvider>(
+                builder: (context, security, _) {
+                  if (security.isAppLockEnabled && !security.isAuthenticated) {
+                    return const AppLockScreen();
+                  }
+                  return const SizedBox.shrink();
+                },
               ),
-            Consumer<SecurityProvider>(
-              builder: (context, security, _) {
-                if (security.isAppLockEnabled && !security.isAuthenticated) {
-                  return const AppLockScreen();
-                }
-                return const SizedBox.shrink();
-              },
-            ),
-          ],
+            ],
+          ),
         );
       },
       home: SplashScreen(),
