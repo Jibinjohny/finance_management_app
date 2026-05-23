@@ -12,7 +12,7 @@ import '../utils/currency_helper.dart';
 import '../widgets/chart_widget.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/account_card.dart';
-import '../widgets/net_worth_bar_chart.dart';
+import '../widgets/net_worth_line_chart.dart';
 import '../widgets/transaction_tile.dart';
 import 'notifications_screen.dart';
 import 'transactions_screen.dart';
@@ -279,8 +279,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           },
                         ),
                         SizedBox(height: 12),
-                        // Bar Chart with Day/Month Toggle
-                        NetWorthBarChart(),
+                        // Premium Line Chart with Day/Month & Mode toggles
+                        const NetWorthLineChart(),
                       ],
                     ),
                   ),
