@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
@@ -25,6 +26,7 @@ class _MainScreenState extends State<MainScreen> {
   int? _targetIndex; // Track the target page during animation
   late PageController _pageController;
   double _backgroundOffset = 0.0;
+  double _pageScrollValue = 0.0; // Track real-time double scroll position
 
   final List<Widget> _screens = [
     const DashboardScreen(),
@@ -42,6 +44,7 @@ class _MainScreenState extends State<MainScreen> {
         setState(() {
           // Move background at half speed for parallax effect
           _backgroundOffset = _pageController.page! * -50;
+          _pageScrollValue = _pageController.page!; // Update scroll value in real-time
         });
       }
     });
@@ -201,155 +204,212 @@ class _MainScreenState extends State<MainScreen> {
                   final W = constraints.maxWidth;
                   final halfW = (W - 70) / 2;
 
-                  // Get flex values for each item to compute exact positions
+                  // Helper to get static left and width coordinates for an index
+                  Map<String, double> getStaticPos(int idx) {
+                    final double f0 = idx == 0 ? 7 : (idx == 1 ? 3 : 1);
+                    final double f1 = idx == 1 ? 7 : (idx == 0 ? 3 : 1);
+                    final double f2 = idx == 2 ? 7 : (idx == 3 ? 3 : 1);
+                    final double f3 = idx == 3 ? 7 : (idx == 2 ? 3 : 1);
+
+                    double l = 0;
+                    double w = 0;
+
+                    if (idx == 0) {
+                      l = 0;
+                      w = halfW * (f0 / (f0 + f1));
+                    } else if (idx == 1) {
+                      l = halfW * (f0 / (f0 + f1));
+                      w = halfW * (f1 / (f0 + f1));
+                    } else if (idx == 2) {
+                      l = halfW + 70;
+                      w = halfW * (f2 / (f2 + f3));
+                    } else if (idx == 3) {
+                      l = halfW + 70 + halfW * (f2 / (f2 + f3));
+                      w = halfW * (f3 / (f2 + f3));
+                    }
+                    return {'left': l, 'width': w};
+                  }
+
+                  // Real-time interpolation based on double page scroll
+                  final double page = _pageScrollValue.clamp(0.0, 3.0);
+                  final int floor = page.floor().clamp(0, 3);
+                  final int ceil = page.ceil().clamp(0, 3);
+                  final double t = page - floor;
+
+                  final posA = getStaticPos(floor);
+                  final posB = getStaticPos(ceil);
+
+                  double computedLeft = lerpDouble(posA['left']!, posB['left']!, t)!;
+                  double computedWidth = lerpDouble(posA['width']!, posB['width']!, t)!;
+
+                  // Liquid Gooey Stretch physics: peaks at t = 0.5 in the middle of transition
+                  final double stretch = 26.0 * (t * (1.0 - t) * 4.0);
+                  computedLeft = computedLeft - (stretch * 0.5);
+                  computedWidth = computedWidth + stretch;
+
+                  // Volume-Conserving Vertical Squish: peaks at t = 0.5 (up to 4.5px each top/bottom inset)
+                  final double squishOffset = 4.5 * (t * (1.0 - t) * 4.0);
+
+                  // Resolve colors of active page in real-time
+                  final int nearestIndex = page.round().clamp(0, 3);
+                  final colors = _getGlowColors(nearestIndex);
+
+                  // Fixed flex indicators for the static text labels row below
                   final double flex0 = _currentIndex == 0 ? 7 : (_currentIndex == 1 ? 3 : 1);
                   final double flex1 = _currentIndex == 1 ? 7 : (_currentIndex == 0 ? 3 : 1);
                   final double flex2 = _currentIndex == 2 ? 7 : (_currentIndex == 3 ? 3 : 1);
                   final double flex3 = _currentIndex == 3 ? 7 : (_currentIndex == 2 ? 3 : 1);
 
-                  double targetLeft = 0;
-                  double targetWidth = 0;
-
-                  if (_currentIndex == 0) {
-                    targetLeft = 0;
-                    targetWidth = halfW * (flex0 / (flex0 + flex1));
-                  } else if (_currentIndex == 1) {
-                    targetLeft = halfW * (flex0 / (flex0 + flex1));
-                    targetWidth = halfW * (flex1 / (flex0 + flex1));
-                  } else if (_currentIndex == 2) {
-                    targetLeft = halfW + 70;
-                    targetWidth = halfW * (flex2 / (flex2 + flex3));
-                  } else if (_currentIndex == 3) {
-                    targetLeft = halfW + 70 + halfW * (flex2 / (flex2 + flex3));
-                    targetWidth = halfW * (flex3 / (flex2 + flex3));
-                  }
-
-                  // Retrieve gradient colors for the active tab
-                  final colors = _getGlowColors(_currentIndex);
-
-                  return Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      // Shared Liquid Glass Sliding indicator
-                      AnimatedPositioned(
-                        duration: const Duration(milliseconds: 320),
-                        curve: Curves.easeOutBack, // Springy gooey / liquid water-drop effect!
-                        left: targetLeft,
-                        width: targetWidth,
-                        top: 0,
-                        bottom: 0,
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 320),
-                          curve: Curves.easeOutBack,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            gradient: LinearGradient(
-                              colors: [
-                                colors[0].withValues(alpha: 0.4),
-                                colors[1].withValues(alpha: 0.15),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.25),
-                              width: 1.0,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: colors[0].withValues(alpha: 0.38),
-                                blurRadius: 18,
-                                spreadRadius: -2,
-                                offset: const Offset(0, 4),
+                  return GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onHorizontalDragStart: (details) {
+                      _handleNavDragUpdate(details.localPosition.dx, constraints.maxWidth);
+                    },
+                    onHorizontalDragUpdate: (details) {
+                      _handleNavDragUpdate(details.localPosition.dx, constraints.maxWidth);
+                    },
+                    onHorizontalDragEnd: (details) {
+                      _handleNavDragEnd();
+                    },
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        // Shared Real-Time Liquid Glass Indicator
+                        Positioned(
+                          left: computedLeft,
+                          width: computedWidth,
+                          top: squishOffset,
+                          bottom: squishOffset,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              // Clean, premium single-tone glass border gradient shifting light catch dynamically
+                              gradient: LinearGradient(
+                                colors: [
+                                  colors[0].withValues(alpha: 0.65),
+                                  colors[1].withValues(alpha: 0.25),
+                                  colors[0].withValues(alpha: 0.15),
+                                ],
+                                begin: Alignment(-1.0 + (t * 0.5), -1.0 + (t * 0.3)),
+                                end: Alignment(1.0 - (t * 0.5), 1.0 - (t * 0.3)),
                               ),
-                            ],
+                              boxShadow: [
+                                BoxShadow(
+                                  color: colors[0].withValues(alpha: 0.22),
+                                  blurRadius: 15,
+                                  spreadRadius: -2,
+                                  offset: const Offset(0, 4),
+                                ),
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.25),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Container(
+                              margin: const EdgeInsets.all(1.2), // Creates a 1.2px delicate single-tone border outline
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(18.8),
+                                color: const Color(0xFF181824).withValues(alpha: 0.8), // Deep dark glass base
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                      // Transparent navigation icons & labels row on top
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: flex0.toInt(),
-                                  child: Center(
-                                    child: _buildNavItem(
-                                      0,
-                                      Icons.home_rounded,
-                                      AppLocalizations.of(context)!.dashboard,
+                        // Transparent navigation icons & labels row on top
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: flex0.toInt(),
+                                    child: Center(
+                                      child: _buildNavItem(
+                                        0,
+                                        Icons.home_outlined,
+                                        Icons.home_rounded,
+                                        AppLocalizations.of(context)!.dashboard,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Expanded(
-                                  flex: flex1.toInt(),
-                                  child: Center(
-                                    child: _buildNavItem(
-                                      1,
-                                      Icons.account_balance_wallet_rounded,
-                                      AppLocalizations.of(context)!.accounts,
+                                  Expanded(
+                                    flex: flex1.toInt(),
+                                    child: Center(
+                                      child: _buildNavItem(
+                                        1,
+                                        Icons.account_balance_wallet_outlined,
+                                        Icons.account_balance_wallet_rounded,
+                                        AppLocalizations.of(context)!.accounts,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 70), // Center gap perfectly aligned with the 70px Floating Button
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: flex2.toInt(),
-                                  child: Center(
-                                    child: _buildNavItem(
-                                      2,
-                                      Icons.pie_chart_rounded,
-                                      AppLocalizations.of(context)!.statistics,
+                            const SizedBox(width: 70), // Center gap perfectly aligned with the 70px Floating Button
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: flex2.toInt(),
+                                    child: Center(
+                                      child: _buildNavItem(
+                                        2,
+                                        Icons.pie_chart_outline_rounded,
+                                        Icons.pie_chart_rounded,
+                                        AppLocalizations.of(context)!.statistics,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Expanded(
-                                  flex: flex3.toInt(),
-                                  child: Center(
-                                    child: _buildNavItem(
-                                      3,
-                                      Icons.calendar_month_rounded,
-                                      _getCompactLabel(context, 3, AppLocalizations.of(context)!.monthlyReport),
+                                  Expanded(
+                                    flex: flex3.toInt(),
+                                    child: Center(
+                                      child: _buildNavItem(
+                                        3,
+                                        Icons.calendar_month_outlined,
+                                        Icons.calendar_month_rounded,
+                                        _getCompactLabel(context, 3, AppLocalizations.of(context)!.monthlyReport),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),
             ),
           ),
 
+
           // Centered Floating Action Button with Container Transform
           Positioned(
-            bottom: 45,
+            bottom: 30, // Mathematically offsets the larger 100x100 container so the 70x70 droplet rests at bottom: 45
             left: 0,
             right: 0,
             child: Center(
               child: OpenContainer(
-                closedElevation: 8,
+                closedElevation: 0,
                 openElevation: 0,
                 closedShape: CircleBorder(),
-                closedColor: AppColors.primary,
+                closedColor: Colors.transparent,
                 openColor: AppColors.background,
                 middleColor: AppColors.primary,
                 transitionDuration: Duration(milliseconds: 400),
                 transitionType: ContainerTransitionType.fade,
                 tappable: false, // We handle the tap manually
                 closedBuilder: (context, action) {
-                  return GestureDetector(
-                    onTap: () {
+                  return SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: Center(
+                      child: GestureDetector(
+                        onTap: () {
                       final accountProvider = Provider.of<AccountProvider>(
                         context,
                         listen: false,
@@ -469,8 +529,10 @@ class _MainScreenState extends State<MainScreen> {
                       }
                     },
                     child: const _PulsingAddButton(),
-                  );
-                },
+                  ),
+                ),
+              );
+            },
                 openBuilder: (context, action) {
                   return const AddTransactionScreenMultiStep();
                 },
@@ -482,10 +544,40 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _buildNavItem(int index, IconData icon, String label) {
+  void _handleNavDragUpdate(double x, double W) {
+    if (W <= 0) return;
+    final double halfW = (W - 70.0) / 2.0;
+
+    // Linear interpolation mapping touch coordinates to dynamic page value [0.0 - 3.0]
+    // taking the 70px center gap into account.
+    double page = 0.0;
+    if (x <= halfW) {
+      page = x / halfW;
+    } else if (x <= halfW + 70.0) {
+      page = 1.0 + (x - halfW) / 70.0;
+    } else {
+      page = 2.0 + (x - halfW - 70.0) / halfW;
+    }
+    page = page.clamp(0.0, 3.0);
+
+    if (_pageController.hasClients) {
+      final double pageWidth = MediaQuery.of(context).size.width;
+      _pageController.jumpTo(page * pageWidth);
+    }
+  }
+
+  void _handleNavDragEnd() {
+    if (_pageController.hasClients && _pageController.page != null) {
+      final int targetIndex = _pageController.page!.round().clamp(0, 3);
+      _onNavItemTapped(targetIndex);
+    }
+  }
+
+  Widget _buildNavItem(int index, IconData outlineIcon, IconData filledIcon, String label) {
     return _LiquidGlassNavItem(
       index: index,
-      icon: icon,
+      outlineIcon: outlineIcon,
+      filledIcon: filledIcon,
       label: label,
       isSelected: _currentIndex == index,
       onTap: () => _onNavItemTapped(index),
@@ -515,36 +607,24 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
-class _PulsingAddButton extends StatefulWidget {
-  const _PulsingAddButton();
+class _WaterDropExpandingRipple extends StatefulWidget {
+  const _WaterDropExpandingRipple();
 
   @override
-  State<_PulsingAddButton> createState() => _PulsingAddButtonState();
+  State<_WaterDropExpandingRipple> createState() => _WaterDropExpandingRippleState();
 }
 
-class _PulsingAddButtonState extends State<_PulsingAddButton>
+class _WaterDropExpandingRippleState extends State<_WaterDropExpandingRipple>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _glowAnimation;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
-    )..repeat(reverse: true);
-
-    _scaleAnimation = Tween<double>(
-      begin: 1.0,
-      end: 1.15,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
-
-    _glowAnimation = Tween<double>(
-      begin: 0.2,
-      end: 0.8,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+      duration: const Duration(milliseconds: 2400),
+    )..repeat();
   }
 
   @override
@@ -558,80 +638,190 @@ class _PulsingAddButtonState extends State<_PulsingAddButton>
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        return Transform.scale(
-          scale: _scaleAnimation.value,
-          child: Container(
-            width: 70,
-            height: 70,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppColors.primary.withValues(alpha: 0.4),
-                  AppColors.primary.withValues(alpha: 0.2),
-                ],
-              ),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.3),
-                width: 2,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.primary.withValues(
-                    alpha: _glowAnimation.value,
-                  ),
-                  blurRadius: 25 + (15 * _controller.value),
-                  spreadRadius: 8 * _controller.value,
-                ),
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.2),
-                  blurRadius: 10,
-                  offset: Offset(0, 5),
-                ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                // Inner glow
-                Positioned.fill(
+        // Ripple 1
+        final double t1 = _controller.value;
+        final double scale1 = 0.95 + (0.85 * t1); // scales from 0.95 to 1.8
+        final double opacity1 = math.pow(1.0 - t1, 2.5) * 0.45; // Smooth exponential decay
+
+        // Ripple 2 (phased by 0.33)
+        final double t2 = (t1 + 0.33) % 1.0;
+        final double scale2 = 0.95 + (0.85 * t2);
+        final double opacity2 = math.pow(1.0 - t2, 2.5) * 0.45;
+
+        // Ripple 3 (phased by 0.66)
+        final double t3 = (t1 + 0.66) % 1.0;
+        final double scale3 = 0.95 + (0.85 * t3);
+        final double opacity3 = math.pow(1.0 - t3, 2.5) * 0.45;
+
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            // Ripple 1
+            if (opacity1 > 0.01)
+              Positioned.fill(
+                child: Transform.scale(
+                  scale: scale1,
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      gradient: RadialGradient(
-                        colors: [
-                          Colors.white.withValues(alpha: 0.2),
-                          Colors.transparent,
-                        ],
-                        stops: [0.0, 1.0],
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: opacity1),
+                        width: 1.0,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withValues(alpha: opacity1 * 0.25),
+                          blurRadius: 6,
+                          spreadRadius: 0.5,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                // Icon
-                Center(
-                  child: Icon(Icons.add_rounded, color: Colors.white, size: 36),
+              ),
+
+            // Ripple 2
+            if (opacity2 > 0.01)
+              Positioned.fill(
+                child: Transform.scale(
+                  scale: scale2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: opacity2),
+                        width: 1.0,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withValues(alpha: opacity2 * 0.25),
+                          blurRadius: 6,
+                          spreadRadius: 0.5,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ],
-            ),
-          ),
+              ),
+
+            // Ripple 3
+            if (opacity3 > 0.01)
+              Positioned.fill(
+                child: Transform.scale(
+                  scale: scale3,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: opacity3),
+                        width: 1.0,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withValues(alpha: opacity3 * 0.25),
+                          blurRadius: 6,
+                          spreadRadius: 0.5,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+          ],
         );
       },
     );
   }
 }
 
+class _PulsingAddButton extends StatelessWidget {
+  const _PulsingAddButton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 62,
+      height: 62,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        // Liquid glass gradient — primary tint on top, transparent toward bottom
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.primary.withValues(alpha: 0.55),
+            AppColors.primary.withValues(alpha: 0.30),
+            Colors.white.withValues(alpha: 0.08),
+          ],
+          stops: const [0.0, 0.55, 1.0],
+        ),
+        // Thin specular border matching the glass nav bar border style
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.40),
+          width: 1.5,
+        ),
+        boxShadow: [
+          // Soft primary colour glow
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.45),
+            blurRadius: 18,
+            spreadRadius: 2,
+          ),
+          // Deep drop shadow for elevation
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.30),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: ClipOval(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 18.0, sigmaY: 18.0),
+          child: Stack(
+            children: [
+              // Inner top-left specular highlight — simulates light catching the glass
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(
+                      center: const Alignment(-0.55, -0.55),
+                      radius: 0.85,
+                      colors: [
+                        Colors.white.withValues(alpha: 0.30),
+                        Colors.transparent,
+                      ],
+                      stops: const [0.0, 1.0],
+                    ),
+                  ),
+                ),
+              ),
+
+              // + Icon centred
+              const Center(
+                child: Icon(Icons.add_rounded, color: Colors.white, size: 34),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _LiquidGlassNavItem extends StatefulWidget {
   final int index;
-  final IconData icon;
+  final IconData outlineIcon;
+  final IconData filledIcon;
   final String label;
   final bool isSelected;
   final VoidCallback onTap;
 
   const _LiquidGlassNavItem({
     required this.index,
-    required this.icon,
+    required this.outlineIcon,
+    required this.filledIcon,
     required this.label,
     required this.isSelected,
     required this.onTap,
@@ -677,6 +867,15 @@ class _LiquidGlassNavItemState extends State<_LiquidGlassNavItem>
 
   @override
   Widget build(BuildContext context) {
+    // Elegant, clean active tab colors (Single-tone matching the page)
+    final Color activeColor = widget.index == 0
+        ? const Color(0xFF00B980) // Emerald Green
+        : (widget.index == 1
+            ? const Color(0xFF6C63FF) // Violet Purple
+            : (widget.index == 2
+                ? const Color(0xFF0984E3) // Royal Cyan
+                : const Color(0xFFE17055))); // Neon Amber
+
     return GestureDetector(
       onTap: widget.onTap,
       child: ScaleTransition(
@@ -697,10 +896,21 @@ class _LiquidGlassNavItemState extends State<_LiquidGlassNavItem>
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(
-                  widget.icon,
-                  color: widget.isSelected ? Colors.white : Colors.white60,
-                  size: 20,
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 200),
+                  transitionBuilder: (child, anim) => FadeTransition(
+                    opacity: anim,
+                    child: ScaleTransition(
+                      scale: Tween<double>(begin: 0.8, end: 1.0).animate(anim),
+                      child: child,
+                    ),
+                  ),
+                  child: Icon(
+                    widget.isSelected ? widget.filledIcon : widget.outlineIcon,
+                    key: ValueKey<bool>(widget.isSelected),
+                    color: widget.isSelected ? activeColor : Colors.white.withValues(alpha: 0.55),
+                    size: 20,
+                  ),
                 ),
                 AnimatedSize(
                   duration: const Duration(milliseconds: 250),
@@ -711,8 +921,8 @@ class _LiquidGlassNavItemState extends State<_LiquidGlassNavItem>
                           padding: const EdgeInsets.only(left: 4.0),
                           child: Text(
                             widget.label,
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: activeColor,
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 0.3,

@@ -657,7 +657,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           onTap: openContainer,
           child: Column(
             children: [
-              GlassContainer(
+               GlassContainer(
                 width: 75,
                 height: 75,
                 borderRadius: BorderRadius.circular(22),
@@ -665,34 +665,61 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    color.withValues(alpha: 0.25),
-                    color.withValues(alpha: 0.05),
+                    color.withValues(alpha: 0.15),
+                    color.withValues(alpha: 0.02),
                   ],
                 ),
-                borderColor: color.withValues(alpha: 0.3),
+                borderColor: color.withValues(alpha: 0.18),
                 boxShadow: [
                   BoxShadow(
-                    color: color.withValues(alpha: 0.15),
-                    blurRadius: 15,
+                    color: color.withValues(alpha: 0.12),
+                    blurRadius: 12,
                     spreadRadius: -2,
-                    offset: Offset(0, 8),
+                    offset: const Offset(0, 4),
                   ),
                 ],
                 child: Center(
                   child: Container(
-                    padding: EdgeInsets.all(8),
+                    width: 48,
+                    height: 48,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: color.withValues(alpha: 0.2),
                       boxShadow: [
                         BoxShadow(
-                          color: color.withValues(alpha: 0.4),
-                          blurRadius: 12,
-                          spreadRadius: 2,
+                          color: color.withValues(alpha: 0.45),
+                          blurRadius: 15,
+                          spreadRadius: 1,
                         ),
                       ],
                     ),
-                    child: Icon(icon, color: Colors.white, size: 26),
+                    child: ClipOval(
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 12.0, sigmaY: 12.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            // High specularity circular glass refraction (Specular top-left catch)
+                            gradient: RadialGradient(
+                              center: const Alignment(-0.25, -0.25),
+                              radius: 0.85,
+                              colors: [
+                                Colors.white.withValues(alpha: 0.45), // Specular light catch
+                                color.withValues(alpha: 0.2), // Transparent base
+                                color.withValues(alpha: 0.65), // Bulb shadow
+                              ],
+                              stops: const [0.0, 0.45, 1.0],
+                            ),
+                            border: Border.all(
+                              color: Colors.white.withValues(alpha: 0.35),
+                              width: 1.2,
+                            ),
+                          ),
+                          child: Center(
+                            child: Icon(icon, color: Colors.white, size: 24),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
