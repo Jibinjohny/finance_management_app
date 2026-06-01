@@ -642,7 +642,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Widget destination,
   ) {
     return OpenContainer(
-      transitionType: ContainerTransitionType.fadeThrough,
+      transitionType: ContainerTransitionType.fade,
       openBuilder: (BuildContext context, VoidCallback _) {
         return destination;
       },
@@ -650,8 +650,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       openElevation: 0,
       closedColor: Colors.transparent,
       openColor: AppColors.background,
-      middleColor: Colors.transparent,
-      transitionDuration: const Duration(milliseconds: 500),
+      middleColor: AppColors.background,
+      transitionDuration: const Duration(milliseconds: 400),
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
         return GestureDetector(
           onTap: openContainer,
