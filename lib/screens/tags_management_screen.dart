@@ -6,6 +6,7 @@ import '../models/tag.dart';
 import '../utils/app_colors.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/apple_liquid_glass_app_bar.dart';
+import '../widgets/liquid_glass_fab.dart';
 import 'add_edit_tag_screen.dart';
 
 class TagsManagementScreen extends StatefulWidget {
@@ -195,9 +196,7 @@ class _TagsManagementScreenState extends State<TagsManagementScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primary,
-        child: Icon(Icons.add, color: Colors.white),
+      floatingActionButton: LiquidGlassFAB(
         onPressed: () => _navigateToAddEditTag(),
       ),
     );

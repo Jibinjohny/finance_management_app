@@ -6,6 +6,8 @@ import '../providers/transaction_provider.dart';
 import '../utils/app_colors.dart';
 import '../utils/currency_helper.dart';
 import '../widgets/glass_container.dart';
+import '../widgets/apple_liquid_glass_app_bar.dart';
+import '../widgets/liquid_glass_fab.dart';
 import 'add_edit_budget_screen.dart';
 
 class BudgetsScreen extends StatefulWidget {
@@ -20,6 +22,8 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBodyBehindAppBar: true,
+      appBar: const AppleLiquidGlassAppBar(title: 'Budgets'),
       body: Stack(
         children: [
           // Background Gradient
@@ -78,37 +82,10 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
             ),
           ),
 
-          SafeArea(
-            child: Column(
-              children: [
-                // Header
-                Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          Icons.arrow_back_ios_new,
-                          color: Colors.white,
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        'Budgets',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Budget List
-                Expanded(
-                  child: Consumer2<BudgetProvider, TransactionProvider>(
+          // Budget List
+          Positioned.fill(
+            child: SafeArea(
+              child: Consumer2<BudgetProvider, TransactionProvider>(
                     builder: (context, budgetProvider, txProvider, child) {
                       final budgets = budgetProvider.budgets;
 
@@ -312,21 +289,17 @@ class _BudgetsScreenState extends State<BudgetsScreen> {
                       );
                     },
                   ),
-                ),
-              ],
             ),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: LiquidGlassFAB(
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => AddEditBudgetScreen()),
           );
         },
-        backgroundColor: AppColors.primary,
-        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }

@@ -8,6 +8,7 @@ import '../utils/app_colors.dart';
 import '../utils/currency_helper.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/apple_liquid_glass_app_bar.dart';
+import '../widgets/liquid_glass_fab.dart';
 import '../utils/glass_snackbar.dart';
 import 'add_edit_recurring_transaction_screen.dart';
 
@@ -135,9 +136,7 @@ class _RecurringTransactionsScreenState
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.primary,
-        child: Icon(Icons.add, color: Colors.white),
+      floatingActionButton: LiquidGlassFAB(
         onPressed: () {
           Navigator.push(
             context,
@@ -233,11 +232,9 @@ class _RecurringTransactionsScreenState
           message: 'Recurring transaction deleted',
         );
       },
-      child: Card(
-        color: AppColors.surface,
-        elevation: 0,
+      child: GlassContainer(
         margin: EdgeInsets.only(bottom: 12),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        borderRadius: BorderRadius.circular(16),
         child: InkWell(
           onLongPress: () {
             HapticFeedback.mediumImpact();

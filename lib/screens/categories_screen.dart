@@ -4,6 +4,7 @@ import '../providers/category_provider.dart';
 import '../models/category.dart';
 import '../utils/app_colors.dart';
 import '../widgets/glass_container.dart';
+import '../widgets/liquid_glass_fab.dart';
 import 'add_category_screen.dart';
 import '../utils/glass_snackbar.dart';
 import '../widgets/income_expense_switch.dart';
@@ -134,7 +135,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: LiquidGlassFAB(
         onPressed: () {
           Navigator.push(
             context,
@@ -145,15 +146,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   name: '',
                   iconCodePoint: Icons.category.codePoint,
                   colorValue: Colors.blue.value,
-                  type: _selectedType, // Pass selected type
+                  type: _selectedType,
                   isDefault: false,
                 ),
               ),
             ),
           );
         },
-        backgroundColor: AppColors.primary,
-        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }
