@@ -1,3 +1,4 @@
+import '../widgets/apple_liquid_glass_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/account_provider.dart';
@@ -49,8 +50,10 @@ class _AccountsScreenState extends State<AccountsScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
+                  AppleLiquidGlassIconButton(
+                    icon: Icons.add,
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -58,32 +61,6 @@ class _AccountsScreenState extends State<AccountsScreen> {
                         ),
                       );
                     },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            AppColors.primary.withValues(alpha: 0.3),
-                            AppColors.secondary.withValues(alpha: 0.2),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.2),
-                          width: 1,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.2),
-                            blurRadius: 8,
-                            spreadRadius: 0,
-                          ),
-                        ],
-                      ),
-                      child: Icon(Icons.add, color: Colors.white, size: 24),
-                    ),
                   ),
                 ],
               ),

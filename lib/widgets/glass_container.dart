@@ -24,7 +24,7 @@ class GlassContainer extends StatelessWidget {
     this.padding,
     this.margin,
     this.borderRadius,
-    this.blur = 15.0, // Increased default blur
+    this.blur = 18.0, // Increased default blur to 18.0 for premium iOS feel
     this.opacity = 0.1,
     this.color,
     this.borderColor,

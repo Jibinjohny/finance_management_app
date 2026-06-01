@@ -10,6 +10,7 @@ import '../utils/currency_helper.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/chart_widget.dart';
 import '../widgets/financial_trend_chart.dart';
+import '../widgets/apple_liquid_glass_dropdown.dart';
 import '../models/account.dart';
 import 'package:cashflow_app/l10n/app_localizations.dart';
 
@@ -55,77 +56,29 @@ class _StatsScreenState extends State<StatsScreen> {
                         ),
                       ),
                       SizedBox(width: 16),
-                      // Account Filter Dropdown
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              AppColors.primary.withValues(alpha: 0.3),
-                              AppColors.secondary.withValues(alpha: 0.2),
-                            ],
+                      AppleLiquidGlassDropdown<String?>(
+                        value: _selectedAccountId,
+                        hint: AppLocalizations.of(context)!.allAccounts,
+                        items: [
+                          AppleLiquidGlassDropdownItem<String?>(
+                            value: null,
+                            label: AppLocalizations.of(context)!.allAccounts,
                           ),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.white.withValues(alpha: 0.2),
-                            width: 1,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.primary.withValues(alpha: 0.2),
-                              blurRadius: 8,
-                              spreadRadius: 0,
-                            ),
-                          ],
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String?>(
-                            value: _selectedAccountId,
-                            dropdownColor: AppColors.surface,
-                            icon: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.white,
-                            ),
-                            hint: Text(
-                              'All Accounts',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                            ),
-                            items: [
-                              DropdownMenuItem<String?>(
-                                value: null,
-                                child: Text(
-                                  AppLocalizations.of(context)!.allAccounts,
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              ...accountProvider.accounts.map((account) {
-                                return DropdownMenuItem<String?>(
-                                  value: account.id,
-                                  child: Text(
-                                    account.type == AccountType.bank &&
-                                            account.bankName != null
-                                        ? '${account.name} (${account.bankName})'
-                                        : account.name,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                );
-                              }),
-                            ],
-                            onChanged: (newValue) {
-                              setState(() {
-                                _selectedAccountId = newValue;
-                              });
-                            },
-                          ),
-                        ),
+                          ...accountProvider.accounts.map((account) {
+                            return AppleLiquidGlassDropdownItem<String?>(
+                              value: account.id,
+                              label: account.type == AccountType.bank &&
+                                      account.bankName != null
+                                  ? '${account.name} (${account.bankName})'
+                                  : account.name,
+                            );
+                          }),
+                        ],
+                        onChanged: (newValue) {
+                          setState(() {
+                            _selectedAccountId = newValue;
+                          });
+                        },
                       ),
                     ],
                   ),

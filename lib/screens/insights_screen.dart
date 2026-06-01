@@ -5,6 +5,8 @@ import '../models/insight.dart';
 import '../utils/app_colors.dart';
 import '../widgets/glass_container.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+
 class InsightsScreen extends StatefulWidget {
   const InsightsScreen({super.key});
 
@@ -31,17 +33,8 @@ class _InsightsScreenState extends State<InsightsScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'Insights',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
+      appBar: const AppleLiquidGlassAppBar(
+        title: 'Insights',
       ),
       body: Stack(
         children: [

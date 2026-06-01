@@ -16,6 +16,8 @@ import '../widgets/income_expense_switch.dart';
 import '../widgets/payment_mode_selector.dart';
 import 'package:cashflow_app/l10n/app_localizations.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+
 class AddTransactionScreenMultiStep extends StatefulWidget {
   const AddTransactionScreenMultiStep({super.key});
 
@@ -165,24 +167,15 @@ class _AddTransactionScreenMultiStepState
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () {
-            if (_currentStep > 0) {
-              _previousStep();
-            } else {
-              Navigator.pop(context);
-            }
-          },
-        ),
-        title: Text(
-          AppLocalizations.of(context)!.addTransactionTitle,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+      appBar: AppleLiquidGlassAppBar(
+        onBackPressed: () {
+          if (_currentStep > 0) {
+            _previousStep();
+          } else {
+            Navigator.pop(context);
+          }
+        },
+        title: AppLocalizations.of(context)!.addTransactionTitle,
       ),
       body: Stack(
         children: [

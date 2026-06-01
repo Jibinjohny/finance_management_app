@@ -8,6 +8,8 @@ import '../utils/app_colors.dart';
 import '../utils/glass_snackbar.dart';
 import '../widgets/glass_container.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+
 class AddEditTagScreen extends StatefulWidget {
   final Tag? tag;
 
@@ -108,18 +110,8 @@ class _AddEditTagScreenState extends State<AddEditTagScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          widget.tag != null ? 'Edit Tag' : 'New Tag',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+      appBar: AppleLiquidGlassAppBar(
+        title: widget.tag != null ? 'Edit Tag' : 'New Tag',
       ),
       body: Stack(
         children: [

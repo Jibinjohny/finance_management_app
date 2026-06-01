@@ -1,3 +1,5 @@
+import '../widgets/apple_liquid_glass_icon_button.dart';
+import '../widgets/apple_liquid_glass_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/transaction_provider.dart';
@@ -52,8 +54,10 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
                   // Share Button
                   Consumer2<TransactionProvider, AccountProvider>(
                     builder: (context, txProvider, accountProvider, child) {
-                      return GestureDetector(
-                        onTap: () async {
+                      return AppleLiquidGlassIconButton(
+                        icon: Icons.share,
+                        padding: EdgeInsets.zero,
+                        onPressed: () async {
                           if (_selectedMonth == null) {
                             debugPrint('No month selected');
                             return;
@@ -170,36 +174,6 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
                             }
                           }
                         },
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                AppColors.primary.withValues(alpha: 0.3),
-                                AppColors.secondary.withValues(alpha: 0.2),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.2),
-                              width: 1,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.primary.withValues(alpha: 0.2),
-                                blurRadius: 8,
-                                spreadRadius: 0,
-                              ),
-                            ],
-                          ),
-                          child: Icon(
-                            Icons.share,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
                       );
                     },
                   ),
@@ -275,93 +249,50 @@ class _MonthlyReportScreenState extends State<MonthlyReportScreen> {
                           children: [
                             // Month Selector
                             Expanded(
-                              child: GlassContainer(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                borderRadius: BorderRadius.circular(15),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    value: _selectedMonth,
-                                    dropdownColor: AppColors.surface,
-                                    isExpanded: true,
-                                    icon: Icon(
-                                      Icons.keyboard_arrow_down,
-                                      color: Colors.white,
-                                    ),
-                                    items: months.map((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(
-                                          value,
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      );
-                                    }).toList(),
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        _selectedMonth = newValue!;
-                                      });
-                                    },
-                                  ),
-                                ),
+                              child: AppleLiquidGlassDropdown<String>(
+                                value: _selectedMonth,
+                                hint: _selectedMonth ?? '',
+                                items: months.map((String value) {
+                                  return AppleLiquidGlassDropdownItem<String>(
+                                    value: value,
+                                    label: value,
+                                  );
+                                }).toList(),
+                                onChanged: (newValue) {
+                                  if (newValue != null) {
+                                    setState(() {
+                                      _selectedMonth = newValue;
+                                    });
+                                  }
+                                },
                               ),
                             ),
                             SizedBox(width: 10),
                             // Account Selector
                             Expanded(
-                              child: GlassContainer(
-                                padding: EdgeInsets.symmetric(horizontal: 15),
-                                borderRadius: BorderRadius.circular(15),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String?>(
-                                    value: _selectedAccountId,
-                                    dropdownColor: AppColors.surface,
-                                    isExpanded: true,
-                                    icon: Icon(
-                                      Icons.keyboard_arrow_down,
-                                      color: Colors.white,
-                                    ),
-                                    hint: Text(
-                                      AppLocalizations.of(context)!.allAccounts,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    items: [
-                                      DropdownMenuItem<String?>(
-                                        value: null,
-                                        child: Text(
-                                          AppLocalizations.of(
-                                            context,
-                                          )!.allAccounts,
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                      ...accountProvider.accounts.map((
-                                        account,
-                                      ) {
-                                        return DropdownMenuItem<String?>(
-                                          value: account.id,
-                                          child: Text(
-                                            account.type == AccountType.bank &&
-                                                    account.bankName != null
-                                                ? '${account.name} (${account.bankName})'
-                                                : account.name,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        );
-                                      }),
-                                    ],
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        _selectedAccountId = newValue;
-                                      });
-                                    },
+                              child: AppleLiquidGlassDropdown<String?>(
+                                value: _selectedAccountId,
+                                hint: AppLocalizations.of(context)!.allAccounts,
+                                items: [
+                                  AppleLiquidGlassDropdownItem<String?>(
+                                    value: null,
+                                    label: AppLocalizations.of(context)!.allAccounts,
                                   ),
-                                ),
+                                  ...accountProvider.accounts.map((account) {
+                                    return AppleLiquidGlassDropdownItem<String?>(
+                                      value: account.id,
+                                      label: account.type == AccountType.bank &&
+                                              account.bankName != null
+                                          ? '${account.name} (${account.bankName})'
+                                          : account.name,
+                                    );
+                                  }),
+                                ],
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    _selectedAccountId = newValue;
+                                  });
+                                },
                               ),
                             ),
                           ],

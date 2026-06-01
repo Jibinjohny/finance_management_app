@@ -13,6 +13,8 @@ import '../widgets/glass_container.dart';
 import '../widgets/income_expense_switch.dart';
 import 'package:cashflow_app/l10n/app_localizations.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+
 class AddEditRecurringTransactionScreen extends StatefulWidget {
   final RecurringTransaction? recurringTransaction;
 
@@ -180,20 +182,10 @@ class _AddEditRecurringTransactionScreenState
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          widget.recurringTransaction != null
-              ? AppLocalizations.of(context)!.editRecurringTitle
-              : AppLocalizations.of(context)!.addRecurringTitle,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+      appBar: AppleLiquidGlassAppBar(
+        title: widget.recurringTransaction != null
+            ? AppLocalizations.of(context)!.editRecurringTitle
+            : AppLocalizations.of(context)!.addRecurringTitle,
       ),
       body: Stack(
         children: [

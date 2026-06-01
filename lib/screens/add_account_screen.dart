@@ -8,6 +8,8 @@ import '../utils/currency_helper.dart';
 import '../widgets/glass_container.dart';
 import 'package:cashflow_app/l10n/app_localizations.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+
 class AddAccountScreen extends StatefulWidget {
   const AddAccountScreen({super.key});
 
@@ -59,18 +61,8 @@ class _AddAccountScreenState extends State<AddAccountScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          AppLocalizations.of(context)!.addAccountTitle,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+      appBar: AppleLiquidGlassAppBar(
+        title: AppLocalizations.of(context)!.addAccountTitle,
       ),
       body: Stack(
         children: [

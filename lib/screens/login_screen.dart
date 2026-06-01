@@ -10,6 +10,7 @@ import '../utils/glass_snackbar.dart';
 import '../utils/validators.dart';
 import '../utils/page_transitions.dart';
 import '../widgets/glass_container.dart';
+import '../widgets/apple_liquid_glass_button.dart';
 import 'main_screen.dart';
 import 'package:cashflow_app/l10n/app_localizations.dart';
 
@@ -469,62 +470,14 @@ class _LoginScreenState extends State<LoginScreen>
                               const SizedBox(height: 32),
 
                               // Tactile Interactive Premium Button
-                              ScaleTransition(
-                                scale: _buttonScaleController,
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  height: 56,
-                                  child: Consumer<AuthProvider>(
-                                    builder: (context, auth, child) {
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(16),
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              AppColors.primary,
-                                              const Color(0xFF5046E5),
-                                            ],
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: AppColors.primary.withOpacity(0.35),
-                                              blurRadius: 20,
-                                              offset: const Offset(0, 8),
-                                            ),
-                                          ],
-                                        ),
-                                        child: ElevatedButton(
-                                          onPressed: auth.isLoading ? null : _login,
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.transparent,
-                                            shadowColor: Colors.transparent,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(16),
-                                            ),
-                                          ),
-                                          child: auth.isLoading
-                                              ? const SizedBox(
-                                                  height: 24,
-                                                  width: 24,
-                                                  child: CircularProgressIndicator(
-                                                    color: Colors.white,
-                                                    strokeWidth: 2.5,
-                                                  ),
-                                                )
-                                              : Text(
-                                                  AppLocalizations.of(context)!.loginButton,
-                                                  style: GoogleFonts.outfit(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                    letterSpacing: 0.5,
-                                                  ),
-                                                ),
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
+                              Consumer<AuthProvider>(
+                                builder: (context, auth, child) {
+                                  return AppleLiquidGlassButton(
+                                    onPressed: _login,
+                                    isLoading: auth.isLoading,
+                                    label: AppLocalizations.of(context)!.loginButton,
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -537,36 +490,19 @@ class _LoginScreenState extends State<LoginScreen>
                         const SizedBox(height: 20),
 
                         // Explore Demo Mode Button
-                        SizedBox(
-                          width: double.infinity,
-                          height: 54,
-                          child: OutlinedButton.icon(
-                            onPressed: _seedAndLoginDemo,
-                            icon: const Icon(
-                              Icons.explore_outlined,
-                              color: AppColors.secondary,
-                              size: 20,
-                            ),
-                            label: Text(
-                              "EXPLORE IN DEMO MODE",
-                              style: GoogleFonts.outfit(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                letterSpacing: 1.0,
-                              ),
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(
-                                color: AppColors.secondary.withOpacity(0.3),
-                                width: 1.5,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              backgroundColor: Colors.white.withOpacity(0.02),
-                              shadowColor: Colors.transparent,
-                            ),
+                        AppleLiquidGlassButton(
+                          onPressed: _seedAndLoginDemo,
+                          icon: Icons.explore_outlined,
+                          label: "EXPLORE IN DEMO MODE",
+                          glowColor: AppColors.secondary,
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              AppColors.secondary.withValues(alpha: 0.25),
+                              AppColors.secondary.withValues(alpha: 0.1),
+                              Colors.white.withValues(alpha: 0.02),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 24),

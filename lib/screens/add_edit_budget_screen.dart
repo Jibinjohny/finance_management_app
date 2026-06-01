@@ -9,6 +9,8 @@ import '../utils/currency_helper.dart';
 import '../utils/glass_snackbar.dart';
 import '../widgets/glass_container.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+
 class AddEditBudgetScreen extends StatefulWidget {
   final Budget? budget;
 
@@ -119,18 +121,8 @@ class _AddEditBudgetScreenState extends State<AddEditBudgetScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          widget.budget == null ? 'New Budget' : 'Edit Budget',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+      appBar: AppleLiquidGlassAppBar(
+        title: widget.budget == null ? 'New Budget' : 'Edit Budget',
       ),
       body: Stack(
         children: [

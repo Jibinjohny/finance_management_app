@@ -100,45 +100,48 @@ class _CategoryPieChartState extends State<CategoryPieChart> {
             flex: 1,
             child: Padding(
               padding: const EdgeInsets.only(left: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: entries.asMap().entries.map((mapEntry) {
-                  final index = mapEntry.key;
-                  final entry = mapEntry.value;
-                  final color = colors[index % colors.length];
-                  final isTouched = index == touchedIndex;
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: entries.asMap().entries.map((mapEntry) {
+                    final index = mapEntry.key;
+                    final entry = mapEntry.value;
+                    final color = colors[index % colors.length];
+                    final isTouched = index == touchedIndex;
 
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: isTouched ? 16 : 12,
-                          height: isTouched ? 16 : 12,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: color,
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            entry.key,
-                            style: TextStyle(
-                              fontSize: isTouched ? 16 : 14,
-                              fontWeight: isTouched
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              color: isTouched ? Colors.white : Colors.white70,
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: isTouched ? 16 : 12,
+                            height: isTouched ? 16 : 12,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: color,
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList(),
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              entry.key,
+                              style: TextStyle(
+                                fontSize: isTouched ? 16 : 14,
+                                fontWeight: isTouched
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                color: isTouched ? Colors.white : Colors.white70,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
           ),

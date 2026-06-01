@@ -9,6 +9,8 @@ import '../widgets/glass_container.dart';
 import '../utils/glass_snackbar.dart';
 import '../widgets/income_expense_switch.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+
 class AddCategoryScreen extends StatefulWidget {
   final Category? category;
 
@@ -116,20 +118,10 @@ class _AddCategoryScreenState extends State<AddCategoryScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          widget.category != null
-              ? AppLocalizations.of(context)!.editCategoryTitle
-              : AppLocalizations.of(context)!.addCategoryTitle,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+      appBar: AppleLiquidGlassAppBar(
+        title: widget.category != null
+            ? AppLocalizations.of(context)!.editCategoryTitle
+            : AppLocalizations.of(context)!.addCategoryTitle,
       ),
       body: Container(
         decoration: BoxDecoration(

@@ -5,6 +5,7 @@ import '../providers/notification_provider.dart';
 import '../providers/auth_provider.dart';
 import '../utils/app_colors.dart';
 import '../widgets/glass_container.dart';
+import '../widgets/apple_liquid_glass_app_bar.dart';
 import 'package:cashflow_app/l10n/app_localizations.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -37,22 +38,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          AppLocalizations.of(context)!.notificationsTitle,
-          style: TextStyle(color: Colors.white),
-        ),
-        iconTheme: IconThemeData(color: Colors.white),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+      appBar: AppleLiquidGlassAppBar(
+        title: AppLocalizations.of(context)!.notificationsTitle,
         actions: [
           Consumer<NotificationProvider>(
             builder: (context, provider, child) {
-              if (provider.notifications.isEmpty) return SizedBox();
+              if (provider.notifications.isEmpty) return const SizedBox();
               return TextButton(
                 onPressed: () {
                   final userId = Provider.of<AuthProvider>(
@@ -65,7 +56,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 },
                 child: Text(
                   AppLocalizations.of(context)!.clearAll,
-                  style: TextStyle(color: AppColors.secondary),
+                  style: const TextStyle(color: AppColors.secondary, fontWeight: FontWeight.bold),
                 ),
               );
             },

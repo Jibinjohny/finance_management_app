@@ -7,6 +7,7 @@ import '../models/recurring_transaction.dart';
 import '../utils/app_colors.dart';
 import '../utils/currency_helper.dart';
 import '../widgets/glass_container.dart';
+import '../widgets/apple_liquid_glass_app_bar.dart';
 import '../utils/glass_snackbar.dart';
 import 'add_edit_recurring_transaction_screen.dart';
 
@@ -39,17 +40,8 @@ class _RecurringTransactionsScreenState
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'Recurring Transactions',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
+      appBar: const AppleLiquidGlassAppBar(
+        title: 'Recurring Transactions',
       ),
       body: Stack(
         children: [

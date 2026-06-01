@@ -15,6 +15,8 @@ import '../models/account.dart';
 import '../utils/glass_snackbar.dart';
 import 'add_edit_goal_screen.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+
 class GoalsScreen extends StatefulWidget {
   const GoalsScreen({super.key});
 
@@ -36,17 +38,8 @@ class _GoalsScreenState extends State<GoalsScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'Financial Goals',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
+      appBar: const AppleLiquidGlassAppBar(
+        title: 'Financial Goals',
       ),
       body: Stack(
         children: [

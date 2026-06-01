@@ -5,6 +5,7 @@ import '../providers/tag_provider.dart';
 import '../models/tag.dart';
 import '../utils/app_colors.dart';
 import '../widgets/glass_container.dart';
+import '../widgets/apple_liquid_glass_app_bar.dart';
 import 'add_edit_tag_screen.dart';
 
 class TagsManagementScreen extends StatefulWidget {
@@ -37,17 +38,8 @@ class _TagsManagementScreenState extends State<TagsManagementScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'Manage Tags',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
+      appBar: const AppleLiquidGlassAppBar(
+        title: 'Manage Tags',
       ),
       body: Stack(
         children: [

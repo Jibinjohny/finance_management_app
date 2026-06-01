@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../utils/app_colors.dart';
 import 'package:cashflow_app/l10n/app_localizations.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+
 class TermsConditionsScreen extends StatelessWidget {
   const TermsConditionsScreen({super.key});
 
@@ -9,17 +11,9 @@ class TermsConditionsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text(
-          AppLocalizations.of(context)!.termsTitle,
-          style: TextStyle(color: Colors.white),
-        ),
+      extendBodyBehindAppBar: true,
+      appBar: AppleLiquidGlassAppBar(
+        title: AppLocalizations.of(context)!.termsTitle,
       ),
       body: Container(
         decoration: BoxDecoration(

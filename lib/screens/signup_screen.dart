@@ -11,6 +11,7 @@ import '../utils/language_helper.dart';
 import '../widgets/currency_selection_sheet.dart';
 import '../widgets/language_selection_sheet.dart';
 import '../widgets/glass_container.dart';
+import '../widgets/apple_liquid_glass_button.dart';
 import 'main_screen.dart';
 import 'package:cashflow_app/l10n/app_localizations.dart';
 
@@ -420,66 +421,16 @@ class _SignupScreenState extends State<SignupScreen>
                                     const SizedBox(height: 32),
 
                                     // Primary Action button
-                                    ScaleTransition(
-                                      scale: _buttonScaleController,
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        height: 56,
-                                        child: Consumer<AuthProvider>(
-                                          builder: (context, auth, child) {
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(16),
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    AppColors.primary,
-                                                    const Color(0xFF5046E5),
-                                                  ],
-                                                ),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: AppColors.primary.withOpacity(0.35),
-                                                    blurRadius: 20,
-                                                    offset: const Offset(0, 8),
-                                                  ),
-                                                ],
-                                              ),
-                                              child: ElevatedButton(
-                                                onPressed: auth.isLoading
-                                                    ? null
-                                                    : (_currentStep == 0 ? _nextStep : _signup),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Colors.transparent,
-                                                  shadowColor: Colors.transparent,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(16),
-                                                  ),
-                                                ),
-                                                child: auth.isLoading
-                                                    ? const SizedBox(
-                                                        height: 24,
-                                                        width: 24,
-                                                        child: CircularProgressIndicator(
-                                                          color: Colors.white,
-                                                          strokeWidth: 2.5,
-                                                        ),
-                                                      )
-                                                    : Text(
-                                                        _currentStep == 0
-                                                            ? AppLocalizations.of(context)!.nextButton
-                                                            : AppLocalizations.of(context)!.signup,
-                                                        style: GoogleFonts.outfit(
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.bold,
-                                                          color: Colors.white,
-                                                          letterSpacing: 0.5,
-                                                        ),
-                                                      ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
+                                    Consumer<AuthProvider>(
+                                      builder: (context, auth, child) {
+                                        return AppleLiquidGlassButton(
+                                          onPressed: _currentStep == 0 ? _nextStep : _signup,
+                                          isLoading: auth.isLoading,
+                                          label: _currentStep == 0
+                                              ? AppLocalizations.of(context)!.nextButton
+                                              : AppLocalizations.of(context)!.signup,
+                                        );
+                                      },
                                     ),
                                   ],
                                 ),

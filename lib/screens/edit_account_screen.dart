@@ -10,6 +10,9 @@ import '../widgets/glass_container.dart';
 import 'package:cashflow_app/l10n/app_localizations.dart';
 import 'dart:ui';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+import '../widgets/apple_liquid_glass_icon_button.dart';
+
 class EditAccountScreen extends StatefulWidget {
   final Account account;
 
@@ -111,21 +114,12 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          AppLocalizations.of(context)!.editAccountTitle,
-          style: TextStyle(color: Colors.white),
-        ),
-        iconTheme: IconThemeData(color: Colors.white),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+      appBar: AppleLiquidGlassAppBar(
+        title: AppLocalizations.of(context)!.editAccountTitle,
         actions: [
-          IconButton(
-            icon: Icon(Icons.delete_outline, color: AppColors.error),
+          AppleLiquidGlassIconButton(
+            icon: Icons.delete_outline,
+            glowColor: AppColors.error,
             onPressed: _showDeleteConfirmation,
           ),
         ],

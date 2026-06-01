@@ -11,6 +11,7 @@ import '../utils/app_colors.dart';
 import '../utils/currency_helper.dart';
 import '../widgets/chart_widget.dart';
 import '../widgets/glass_container.dart';
+import '../widgets/apple_liquid_glass_icon_button.dart';
 import '../widgets/account_card.dart';
 import '../widgets/net_worth_line_chart.dart';
 import '../widgets/transaction_tile.dart';
@@ -135,10 +136,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Consumer<NotificationProvider>(
                             builder: (context, notifProvider, child) {
                               return Stack(
+                                clipBehavior: Clip.none,
                                 children: [
-                                  IconButton(
-                                    icon: Icon(Icons.notifications_outlined),
-                                    color: Colors.white,
+                                  AppleLiquidGlassIconButton(
+                                    icon: Icons.notifications_outlined,
+                                    padding: EdgeInsets.zero,
                                     onPressed: () {
                                       Navigator.push(
                                         context,
@@ -150,26 +152,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ),
                                   if (notifProvider.unreadCount > 0)
                                     Positioned(
-                                      right: 8,
-                                      top: 8,
-                                      child: Container(
-                                        padding: EdgeInsets.all(4),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.error,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        constraints: BoxConstraints(
-                                          minWidth: 16,
-                                          minHeight: 16,
-                                        ),
-                                        child: Text(
-                                          '${notifProvider.unreadCount}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
+                                      right: 2,
+                                      top: 2,
+                                      child: IgnorePointer(
+                                        child: Container(
+                                          padding: const EdgeInsets.all(4),
+                                          decoration: const BoxDecoration(
+                                            color: AppColors.error,
+                                            shape: BoxShape.circle,
                                           ),
-                                          textAlign: TextAlign.center,
+                                          constraints: const BoxConstraints(
+                                            minWidth: 16,
+                                            minHeight: 16,
+                                          ),
+                                          child: Text(
+                                            '${notifProvider.unreadCount}',
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -177,9 +181,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               );
                             },
                           ),
-                          // Profile Icon with special styling
-                          GestureDetector(
-                            onTap: () {
+                          const SizedBox(width: 12),
+                          // Profile Icon with premium styling
+                          AppleLiquidGlassIconButton(
+                            icon: Icons.person_outline,
+                            padding: EdgeInsets.zero,
+                            onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -187,38 +194,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 ),
                               );
                             },
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    AppColors.primary.withValues(alpha: 0.3),
-                                    AppColors.secondary.withValues(alpha: 0.2),
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.2),
-                                  width: 1,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColors.primary.withValues(
-                                      alpha: 0.2,
-                                    ),
-                                    blurRadius: 8,
-                                    spreadRadius: 0,
-                                  ),
-                                ],
-                              ),
-                              child: Icon(
-                                Icons.person_outline,
-                                color: Colors.white,
-                                size: 24,
-                              ),
-                            ),
                           ),
                         ],
                       ),

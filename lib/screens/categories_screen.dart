@@ -8,6 +8,8 @@ import 'add_category_screen.dart';
 import '../utils/glass_snackbar.dart';
 import '../widgets/income_expense_switch.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
 
@@ -23,18 +25,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          'Categories',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+      appBar: const AppleLiquidGlassAppBar(
+        title: 'Categories',
       ),
       body: Stack(
         children: [

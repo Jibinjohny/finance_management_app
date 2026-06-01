@@ -186,55 +186,147 @@ class _MainScreenState extends State<MainScreen> {
             children: _screens,
           ),
 
-          // Custom Bottom Navigation Bar
           Positioned(
             bottom: 20,
-            left: 20,
-            right: 20,
+            left: 16,
+            right: 16,
             child: GlassContainer(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               borderRadius: BorderRadius.circular(30),
-              color: AppColors.primary.withValues(alpha: 0.2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Left Side
-                  Row(
+              color: Colors.black.withValues(alpha: 0.35),
+              borderColor: Colors.white.withValues(alpha: 0.12),
+              borderWidth: 1.0,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final W = constraints.maxWidth;
+                  final halfW = (W - 70) / 2;
+
+                  // Get flex values for each item to compute exact positions
+                  final double flex0 = _currentIndex == 0 ? 7 : (_currentIndex == 1 ? 3 : 1);
+                  final double flex1 = _currentIndex == 1 ? 7 : (_currentIndex == 0 ? 3 : 1);
+                  final double flex2 = _currentIndex == 2 ? 7 : (_currentIndex == 3 ? 3 : 1);
+                  final double flex3 = _currentIndex == 3 ? 7 : (_currentIndex == 2 ? 3 : 1);
+
+                  double targetLeft = 0;
+                  double targetWidth = 0;
+
+                  if (_currentIndex == 0) {
+                    targetLeft = 0;
+                    targetWidth = halfW * (flex0 / (flex0 + flex1));
+                  } else if (_currentIndex == 1) {
+                    targetLeft = halfW * (flex0 / (flex0 + flex1));
+                    targetWidth = halfW * (flex1 / (flex0 + flex1));
+                  } else if (_currentIndex == 2) {
+                    targetLeft = halfW + 70;
+                    targetWidth = halfW * (flex2 / (flex2 + flex3));
+                  } else if (_currentIndex == 3) {
+                    targetLeft = halfW + 70 + halfW * (flex2 / (flex2 + flex3));
+                    targetWidth = halfW * (flex3 / (flex2 + flex3));
+                  }
+
+                  // Retrieve gradient colors for the active tab
+                  final colors = _getGlowColors(_currentIndex);
+
+                  return Stack(
+                    clipBehavior: Clip.none,
                     children: [
-                      _buildNavItem(
-                        0,
-                        Icons.home_rounded,
-                        AppLocalizations.of(context)!.dashboard,
+                      // Shared Liquid Glass Sliding indicator
+                      AnimatedPositioned(
+                        duration: const Duration(milliseconds: 320),
+                        curve: Curves.easeOutBack, // Springy gooey / liquid water-drop effect!
+                        left: targetLeft,
+                        width: targetWidth,
+                        top: 0,
+                        bottom: 0,
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 320),
+                          curve: Curves.easeOutBack,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: LinearGradient(
+                              colors: [
+                                colors[0].withValues(alpha: 0.4),
+                                colors[1].withValues(alpha: 0.15),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            border: Border.all(
+                              color: Colors.white.withValues(alpha: 0.25),
+                              width: 1.0,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: colors[0].withValues(alpha: 0.38),
+                                blurRadius: 18,
+                                spreadRadius: -2,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      SizedBox(width: 10),
-                      _buildNavItem(
-                        1,
-                        Icons.account_balance_wallet_rounded,
-                        AppLocalizations.of(context)!.accounts,
+                      // Transparent navigation icons & labels row on top
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: flex0.toInt(),
+                                  child: Center(
+                                    child: _buildNavItem(
+                                      0,
+                                      Icons.home_rounded,
+                                      AppLocalizations.of(context)!.dashboard,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: flex1.toInt(),
+                                  child: Center(
+                                    child: _buildNavItem(
+                                      1,
+                                      Icons.account_balance_wallet_rounded,
+                                      AppLocalizations.of(context)!.accounts,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 70), // Center gap perfectly aligned with the 70px Floating Button
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: flex2.toInt(),
+                                  child: Center(
+                                    child: _buildNavItem(
+                                      2,
+                                      Icons.pie_chart_rounded,
+                                      AppLocalizations.of(context)!.statistics,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: flex3.toInt(),
+                                  child: Center(
+                                    child: _buildNavItem(
+                                      3,
+                                      Icons.calendar_month_rounded,
+                                      _getCompactLabel(context, 3, AppLocalizations.of(context)!.monthlyReport),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
-                  ),
-
-                  // Spacer for Center Button
-                  SizedBox(width: 60),
-
-                  // Right Side
-                  Row(
-                    children: [
-                      _buildNavItem(
-                        2,
-                        Icons.pie_chart_rounded,
-                        AppLocalizations.of(context)!.statistics,
-                      ),
-                      SizedBox(width: 10),
-                      _buildNavItem(
-                        3,
-                        Icons.calendar_month_rounded,
-                        AppLocalizations.of(context)!.monthlyReport,
-                      ),
-                    ],
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           ),
@@ -391,33 +483,35 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _buildNavItem(int index, IconData icon, String label) {
-    final isSelected = _currentIndex == index;
-    return GestureDetector(
+    return _LiquidGlassNavItem(
+      index: index,
+      icon: icon,
+      label: label,
+      isSelected: _currentIndex == index,
       onTap: () => _onNavItemTapped(index),
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeOutCubic,
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Colors.transparent,
-          shape: BoxShape.circle,
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.4),
-                    blurRadius: 20,
-                    spreadRadius: 5,
-                  ),
-                ]
-              : [],
-        ),
-        child: Icon(
-          icon,
-          color: isSelected ? Colors.white : Colors.white54,
-          size: 24,
-        ),
-      ),
     );
+  }
+
+  String _getCompactLabel(BuildContext context, int index, String label) {
+    if (index == 3) {
+      final parts = label.split(' ');
+      return parts.isNotEmpty ? parts[0] : label;
+    }
+    return label;
+  }
+
+  List<Color> _getGlowColors(int index) {
+    switch (index) {
+      case 0:
+        return const [Color(0xFF00B980), Color(0xFF10E2A1)]; // Emerald
+      case 1:
+        return const [Color(0xFF6C63FF), Color(0xFF9089FF)]; // Violet
+      case 2:
+        return const [Color(0xFF0984E3), Color(0xFF00CEC9)]; // Royal Cyan
+      case 3:
+      default:
+        return const [Color(0xFFE17055), Color(0xFFFFB366)]; // Neon Amber
+    }
   }
 }
 
@@ -527,3 +621,113 @@ class _PulsingAddButtonState extends State<_PulsingAddButton>
     );
   }
 }
+
+class _LiquidGlassNavItem extends StatefulWidget {
+  final int index;
+  final IconData icon;
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _LiquidGlassNavItem({
+    required this.index,
+    required this.icon,
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  State<_LiquidGlassNavItem> createState() => _LiquidGlassNavItemState();
+}
+
+class _LiquidGlassNavItemState extends State<_LiquidGlassNavItem>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _springController;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _springController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 350),
+      lowerBound: 0.9,
+      upperBound: 1.1,
+      value: 1.0,
+    );
+    _scaleAnimation = _springController;
+  }
+
+  @override
+  void didUpdateWidget(covariant _LiquidGlassNavItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isSelected && !oldWidget.isSelected) {
+      _springController.forward(from: 1.0).then((_) {
+        _springController.animateTo(1.0, curve: Curves.easeOutCubic);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _springController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOutCubic,
+          padding: EdgeInsets.symmetric(
+            horizontal: widget.isSelected ? 12 : 8,
+            vertical: 10,
+          ),
+          decoration: const BoxDecoration(), // Snugly transparent wrapper
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  widget.icon,
+                  color: widget.isSelected ? Colors.white : Colors.white60,
+                  size: 20,
+                ),
+                AnimatedSize(
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeOutCubic,
+                  child: !widget.isSelected
+                      ? const SizedBox.shrink()
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 4.0),
+                          child: Text(
+                            widget.label,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.3,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+

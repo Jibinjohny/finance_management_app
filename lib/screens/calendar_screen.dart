@@ -8,6 +8,8 @@ import '../utils/app_colors.dart';
 import '../utils/currency_helper.dart';
 import '../widgets/glass_container.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
 
@@ -69,17 +71,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'Calendar',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
+      appBar: const AppleLiquidGlassAppBar(
+        title: 'Calendar',
       ),
       body: Stack(
         children: [

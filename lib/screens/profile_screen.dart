@@ -7,6 +7,8 @@ import '../providers/language_provider.dart';
 import '../utils/app_colors.dart';
 import '../utils/glass_snackbar.dart';
 import '../widgets/glass_container.dart';
+import '../widgets/apple_liquid_glass_app_bar.dart';
+import '../widgets/apple_liquid_glass_icon_button.dart';
 import 'faq_screen.dart';
 import 'privacy_policy_screen.dart';
 import 'terms_conditions_screen.dart';
@@ -119,28 +121,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          AppLocalizations.of(context)!.profile,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        iconTheme: IconThemeData(color: Colors.white),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+      appBar: AppleLiquidGlassAppBar(
+        title: AppLocalizations.of(context)!.profile,
         actions: [
-          IconButton(
-            icon: Icon(
-              _isEditing ? Icons.check : Icons.edit,
-              color: Colors.white,
-            ),
+          AppleLiquidGlassIconButton(
+            icon: _isEditing ? Icons.check : Icons.edit,
+            padding: EdgeInsets.zero,
             onPressed: _isEditing ? _saveProfile : _toggleEdit,
           ),
         ],

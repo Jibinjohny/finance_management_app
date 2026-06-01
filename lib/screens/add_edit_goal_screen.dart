@@ -10,6 +10,9 @@ import '../utils/currency_helper.dart';
 import '../utils/glass_snackbar.dart';
 import '../widgets/glass_container.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+import '../widgets/apple_liquid_glass_icon_button.dart';
+
 class AddEditGoalScreen extends StatefulWidget {
   final Goal? goal;
 
@@ -161,22 +164,13 @@ class _AddEditGoalScreenState extends State<AddEditGoalScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          widget.goal != null ? 'Edit Goal' : 'New Goal',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+      appBar: AppleLiquidGlassAppBar(
+        title: widget.goal != null ? 'Edit Goal' : 'New Goal',
         actions: [
           if (widget.goal != null)
-            IconButton(
-              icon: Icon(Icons.delete, color: AppColors.error),
+            AppleLiquidGlassIconButton(
+              icon: Icons.delete_outline,
+              glowColor: AppColors.error,
               onPressed: _deleteGoal,
             ),
         ],

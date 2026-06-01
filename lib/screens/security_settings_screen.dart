@@ -6,6 +6,8 @@ import '../utils/glass_snackbar.dart';
 import '../widgets/glass_container.dart';
 import 'app_lock_screen.dart';
 
+import '../widgets/apple_liquid_glass_app_bar.dart';
+
 class SecuritySettingsScreen extends StatelessWidget {
   const SecuritySettingsScreen({super.key});
 
@@ -14,17 +16,8 @@ class SecuritySettingsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text(
-          'Security',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+      appBar: const AppleLiquidGlassAppBar(
+        title: 'Security',
       ),
       body: Stack(
         children: [
